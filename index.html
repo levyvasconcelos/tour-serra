@@ -1,16 +1,18 @@
 <!DOCTYPE html>
+<html>
+<head>
 
 <link rel="manifest" href="manifest.json">
+
 <script>
 if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('service-worker.js');
+  navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 
-<html>
-<head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tour Serra da Estrela</title>
+
 <style>
 body{font-family:Arial;text-align:center;padding:30px;}
 button{font-size:22px;padding:15px 30px;}
@@ -93,6 +95,7 @@ document.getElementById("foto").style.display="block";
 
 </body>
 </html>
+
 
 
 

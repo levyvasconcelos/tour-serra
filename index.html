@@ -18,26 +18,41 @@ button{font-size:22px;padding:15px 30px;}
 <img id="foto" width="90%" style="margin-top:20px; display:none;">
 
 <script>
-const pontos = [
-{nome:"Varandas dos Carqueijais",lat:40.311,lng:-7.553,
-foto:"https://images.unsplash.com/photo-1501785888041-af3ef285b470"},
 
-{nome:"Penhas da Saúde",lat:40.323,lng:-7.563,
-foto:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"},
+  const pontos = [
+{nome:"Varandas dos Carqueijais",
+lat:40.311,lng:-7.553,
+foto:"https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+texto:"Miradouro panorâmico com vista ampla sobre o vale da Cova da Beira."},
 
-{nome:"Piornos",lat:40.338,lng:-7.575,
-foto:"https://images.unsplash.com/photo-1469474968028-56623f02e42e"},
+{nome:"Penhas da Saúde",
+lat:40.323,lng:-7.563,
+foto:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+texto:"Zona de montanha famosa pelas paisagens graníticas e estâncias de neve."},
 
-{nome:"Covão d’Ametade",lat:40.349,lng:-7.589,
-foto:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e"},
+{nome:"Piornos",
+lat:40.338,lng:-7.575,
+foto:"https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+texto:"Ponto elevado com vistas extensas da Serra da Estrela."},
 
-{nome:"Senhora da Boa Estrela",lat:40.360,lng:-7.598,
-foto:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429"},
+{nome:"Covão d’Ametade",
+lat:40.349,lng:-7.589,
+foto:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
+texto:"Vale glaciar de grande beleza natural e área de descanso."},
 
-{nome:"Torre",lat:40.321,lng:-7.612,
-foto:"https://images.unsplash.com/photo-1470770841072-f978cf4d019e"}
+{nome:"Senhora da Boa Estrela",
+lat:40.360,lng:-7.598,
+foto:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
+texto:"Escultura monumental esculpida na rocha com vista panorâmica."},
+
+{nome:"Torre",
+lat:40.321,lng:-7.612,
+foto:"https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+texto:"Ponto mais alto de Portugal continental, com neve frequente no inverno."}
 ];
 
+
+  
 
 function iniciar(){
 
@@ -53,7 +68,8 @@ let d = Math.sqrt((lat-p.lat)**2+(lng-p.lng)**2);
 if(d < 0.01){
 
 document.getElementById("info").innerHTML =
-"Você chegou em: " + p.nome;
+"Você chegou em: " + p.nome + "<br>" + p.texto;
+
 
 document.getElementById("foto").src = p.foto;
 document.getElementById("foto").style.display="block";
@@ -69,6 +85,7 @@ document.getElementById("foto").style.display="block";
 
 </body>
 </html>
+
 
 
 

@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tour Serra da Estrela</title>
 <style>
-body{font-family:Arial;text-align:center;padding:40px;}
+body{font-family:Arial;text-align:center;padding:30px;}
 button{font-size:22px;padding:15px 30px;}
 </style>
 </head>
@@ -18,22 +18,37 @@ button{font-size:22px;padding:15px 30px;}
 <p id="info">Aguardando início...</p>
 
 <script>
+
+const pontos = [
+{nome:"Varandas dos Carqueijais",lat:40.311,lng:-7.553},
+{nome:"Penhas da Saúde",lat:40.323,lng:-7.563},
+{nome:"Piornos",lat:40.338,lng:-7.575},
+{nome:"Covão d’Ametade",lat:40.349,lng:-7.589},
+{nome:"Senhora da Boa Estrela",lat:40.360,lng:-7.598},
+{nome:"Torre",lat:40.321,lng:-7.612}
+];
+
 function iniciar(){
 
-document.getElementById("info").innerHTML="Obtendo localização...";
+document.getElementById("info").innerHTML="Tour iniciado...";
 
-navigator.geolocation.getCurrentPosition(function(pos){
+navigator.geolocation.watchPosition(function(pos){
 
+const lat = pos.coords.latitude;
+const lng = pos.coords.longitude;
+
+pontos.forEach(p=>{
+let d = Math.sqrt((lat-p.lat)**2+(lng-p.lng)**2);
+if(d < 0.01){
 document.getElementById("info").innerHTML =
-"Latitude: " + pos.coords.latitude +
-"<br>Longitude: " + pos.coords.longitude;
+"Você chegou em: " + p.nome;
+}
+});
 
-}, function(){
-document.getElementById("info").innerHTML =
-"Permissão de localização negada";
 });
 
 }
+
 </script>
 
 </body>

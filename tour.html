@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tour Serra da Estrela</title>
+<style>
+body{font-family:Arial;text-align:center;padding:40px;}
+button{font-size:22px;padding:15px 30px;}
+</style>
+</head>
+
+<body>
+
+<h2>Tour Interativo Serra da Estrela</h2>
+
+<button onclick="iniciar()">INICIAR TOUR</button>
+
+<p id="info">Aguardando início...</p>
+
+<script>
+function iniciar(){
+
+document.getElementById("info").innerHTML="Obtendo localização...";
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+document.getElementById("info").innerHTML =
+"Latitude: " + pos.coords.latitude +
+"<br>Longitude: " + pos.coords.longitude;
+
+}, function(){
+document.getElementById("info").innerHTML =
+"Permissão de localização negada";
+});
+
+}
+</script>
+
+</body>
+</html>

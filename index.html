@@ -23,7 +23,7 @@ img{width:90%;max-width:500px;margin:10px 0;}
 
 <script>
 
-let pontoAtual = -1;
+let ultimoIndice = -1;
 
 const pontos=[
 
@@ -55,28 +55,23 @@ document.getElementById("status").innerText="GPS ativo";
 
 navigator.geolocation.watchPosition(pos=>{
 
-let lat=pos.coords.latitude;
-let lng=pos.coords.longitude;
+let lat = pos.coords.latitude;
+let lng = pos.coords.longitude;
 
-if(pontoAtual==-1){
-let menor=999999;
+let menor = 999999;
+let indice = -1;
+
 pontos.forEach((p,i)=>{
-let d=dist(lat,lng,p.lat,p.lng);
-if(d<menor){
-menor=d;
-pontoAtual=i;
+let d = dist(lat,lng,p.lat,p.lng);
+if(d < menor){
+menor = d;
+indice = i;
 }
 });
-mostrar(pontos[pontoAtual]);
-return;
-}
 
-let p=pontos[pontoAtual];
-let d=dist(lat,lng,p.lat,p.lng);
-
-if(d<p.raio){
-mostrar(p);
-pontoAtual++;
+if(indice !== ultimoIndice){
+ultimoIndice = indice;
+mostrar(pontos[indice]);
 }
 
 },{enableHighAccuracy:true});
@@ -84,14 +79,14 @@ pontoAtual++;
 }
 
 function mostrar(p){
-document.getElementById("nome").innerText=p.nome;
-document.getElementById("texto").innerText=p.texto;
+document.getElementById("nome").innerText = p.nome;
+document.getElementById("texto").innerText = p.texto;
 
 let html="";
 p.img.forEach(i=>{
-html+=`<img src="${i}">`;
+html += `<img src="${i}">`;
 });
-document.getElementById("imgs").innerHTML=html;
+document.getElementById("imgs").innerHTML = html;
 }
 
 function dist(lat1,lng1,lat2,lng2){
@@ -106,7 +101,3 @@ return R*c;
 }
 
 </script>
-</body>
-</html>
-
-

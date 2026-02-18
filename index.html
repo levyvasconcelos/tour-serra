@@ -14,8 +14,10 @@ img{width:90%;max-width:500px;margin:10px 0;}
 <body>
 
 <h1>Tour Interativo Covilhã e Serra</h1>
+
 <button onclick="iniciar()">INICIAR TOUR</button>
 
+<p id="status">Pressione iniciar para começar</p>
 <h2 id="nome"></h2>
 <p id="texto"></p>
 <div id="imgs"></div>
@@ -25,49 +27,28 @@ img{width:90%;max-width:500px;margin:10px 0;}
 let pontoAtual = 0;
 
 const pontos=[
-
 {nome:"Central de Camionagem",lat:40.2735,lng:-7.4983,raio:250,texto:"Principal terminal rodoviário da cidade.",img:["images/camionagem1.jpg"]},
-
 {nome:"Serra Shopping",lat:40.2710,lng:-7.5023,raio:250,texto:"Maior centro comercial da Covilhã.",img:["images/shopping1.jpg"]},
-
 {nome:"Hotel Santa Eufémia",lat:40.2734,lng:-7.5031,raio:250,texto:"Hotel tradicional da cidade.",img:["images/hotel1.jpg"]},
-
 {nome:"Igreja Nossa Senhora de Fátima",lat:40.277692,lng:-7.509809,raio:200,texto:"Importante igreja da cidade.",img:["images/fatima1.jpg"]},
-
 {nome:"Rotunda do Rato",lat:40.2771,lng:-7.5105,raio:200,texto:"Importante ponto de circulação urbana.",img:["images/rato1.jpg"]},
-
 {nome:"Museu do Lanifício",lat:40.2779,lng:-7.5085,raio:200,texto:"Museu histórico da indústria têxtil.",img:["images/lanificio1.jpg"]},
-
 {nome:"Igreja Santa Maria Maior",lat:40.280208,lng:-7.506062,raio:200,texto:"Principal igreja histórica da Covilhã.",img:["images/maria1.jpg"]},
-
 {nome:"Câmara Municipal",lat:40.2805,lng:-7.5044,raio:200,texto:"Centro administrativo da cidade.",img:["images/camara1.jpg"]},
-
 {nome:"Castelo da Covilhã",lat:40.2817,lng:-7.5086,raio:200,texto:"Fortificação medieval.",img:["images/castelo1.jpg"]},
-
 {nome:"Parque do Pião",lat:40.2872,lng:-7.5271,raio:300,texto:"Zona natural de lazer.",img:["images/piao1.jpg"]},
-
 {nome:"Penhas da Saúde",lat:40.3076,lng:-7.5486,raio:800,texto:"Zona turística de montanha.",img:["images/penhas1.jpg"]},
-
-{nome:"Edifício do Teleférico - Piornos",lat:40.314362,lng:-7.575729,raio:600,texto:"Base histórica do teleférico.",img:["images/teleferico.jpg"]},
-
-{nome:"Nossa Senhora da Boa Estrela",lat:40.322991,lng:-7.602988,raio:600,texto:"Imagem religiosa esculpida na rocha.",img:["images/boaestrela.jpg"]},
-
-{nome:"Lagoa do Viriato",lat:40.322991,lng:-7.602988,raio:600,texto:"Lago natural da Serra.",img:["images/viriato.jpg"]},
-
-{nome:"Miradouro do Vale de Loriga",lat:40.334209,lng:-7.617628,raio:800,texto:"Vista panorâmica do vale glaciar.",img:["images/loriga.jpg"]},
-
-{nome:"Estância de Ski Serra da Estrela",lat:40.330836,lng:-7.613945,raio:800,texto:"Principal centro de desportos de inverno.",img:["images/ski.jpg"]},
-
-{nome:"Vale do Zêzere",lat:40.3280,lng:-7.5867,raio:800,texto:"Grande vale glaciar.",img:["images/zezere1.jpg"]},
-
-{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg"]},
-
-{nome:"Cascata do Poço do Inferno",lat:40.372757,lng:-7.516673,raio:800,texto:"Cascata natural emblemática.",img:["images/pocoinferno.jpg"]}
-
+{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg"]}
 ];
 
 function iniciar(){
+
+document.getElementById("status").innerText="Solicitando GPS...";
+
 navigator.geolocation.watchPosition(pos=>{
+
+document.getElementById("status").innerText="GPS ativo";
+
 let lat=pos.coords.latitude;
 let lng=pos.coords.longitude;
 
@@ -81,7 +62,12 @@ pontoAtual++;
 }
 }
 
-},{enableHighAccuracy:true});
+},
+err=>{
+document.getElementById("status").innerText="Permita a localização no navegador";
+},
+{enableHighAccuracy:true});
+
 }
 
 function mostrar(p){
@@ -107,6 +93,5 @@ return R*c;
 }
 
 </script>
-
 </body>
 </html>

@@ -26,25 +26,36 @@ button{padding:15px 30px;font-size:18px}
 <script>
 
 const pontos=[
-{nome:"Rotunda do Rato",lat:40.2797,lng:-7.5035,raio:200,texto:"Importante ponto de circulação urbana.",img:["images/rato1.jpg","images/rato2.jpg","images/rato3.jpg"]},
-{nome:"Museu do Lanifício",lat:40.2807,lng:-7.5054,raio:200,texto:"Museu histórico da indústria têxtil.",img:["images/lanificio1.jpg","images/lanificio2.jpg","images/lanificio3.jpg"]},
-{nome:"Câmara Municipal",lat:40.2830,lng:-7.5030,raio:200,texto:"Centro administrativo da cidade.",img:["images/camara1.jpg","images/camara2.jpg","images/camara3.jpg"]},
-{nome:"Castelo da Covilhã",lat:40.2820,lng:-7.5055,raio:200,texto:"Fortificação medieval.",img:["images/castelo1.jpg","images/castelo2.jpg","images/castelo3.jpg"]},
-{nome:"Parque do Pião",lat:40.3140,lng:-7.5105,raio:200,texto:"Zona natural de lazer.",img:["images/piao1.jpg","images/piao2.jpg","images/piao3.jpg"]},
-{nome:"Penhas da Saúde",lat:40.2995,lng:-7.5503,raio:800,texto:"Zona turística de montanha.",img:["images/penhas1.jpg","images/penhas2.jpg","images/penhas3.jpg"]},
-{nome:"Vale do Zêzere",lat:40.3066,lng:-7.5450,raio:800,texto:"Grande vale glaciar.",img:["images/zezere1.jpg","images/zezere2.jpg","images/zezere3.jpg"]},
-{nome:"Lagoa Comprida",lat:40.3415,lng:-7.6128,raio:800,texto:"Lago glaciar.",img:["images/lagoa1.jpg","images/lagoa2.jpg","images/lagoa3.jpg"]},
-{nome:"Torre Serra da Estrela",lat:40.3213,lng:-7.6122,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg","images/torre2.jpg","images/torre3.jpg"]}
+
+{nome:"Central de Camionagem",lat:40.2791,lng:-7.5055,raio:250,texto:"Principal terminal rodoviário da cidade.",img:["images/camionagem1.jpg"]},
+
+{nome:"Serra Shopping",lat:40.2865,lng:-7.5050,raio:250,texto:"Maior centro comercial da Covilhã.",img:["images/shopping1.jpg"]},
+
+{nome:"Hotel Santa Eufémia",lat:40.2823,lng:-7.5037,raio:250,texto:"Hotel tradicional da cidade.",img:["images/hotel1.jpg"]},
+
+{nome:"Rotunda do Rato",lat:40.2797,lng:-7.5035,raio:200,texto:"Importante ponto de circulação urbana.",img:["images/rato1.jpg"]},
+
+{nome:"Museu do Lanifício",lat:40.2807,lng:-7.5054,raio:200,texto:"Museu histórico da indústria têxtil.",img:["images/lanificio1.jpg"]},
+
+{nome:"Câmara Municipal",lat:40.2830,lng:-7.5030,raio:200,texto:"Centro administrativo da cidade.",img:["images/camara1.jpg"]},
+
+{nome:"Castelo da Covilhã",lat:40.2820,lng:-7.5055,raio:200,texto:"Fortificação medieval.",img:["images/castelo1.jpg"]},
+
+{nome:"Parque do Pião",lat:40.3140,lng:-7.5105,raio:300,texto:"Zona natural de lazer.",img:["images/piao1.jpg"]},
+
+{nome:"Penhas da Saúde",lat:40.2995,lng:-7.5503,raio:800,texto:"Zona turística de montanha.",img:["images/penhas1.jpg"]},
+
+{nome:"Vale do Zêzere",lat:40.3066,lng:-7.5450,raio:800,texto:"Grande vale glaciar.",img:["images/zezere1.jpg"]},
+
+{nome:"Lagoa Comprida",lat:40.3415,lng:-7.6128,raio:800,texto:"Lago glaciar.",img:["images/lagoa1.jpg"]},
+
+{nome:"Torre Serra da Estrela",lat:40.3213,lng:-7.6122,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg"]}
+
 ];
 
 function iniciar(){
 
 document.getElementById("status").innerHTML="Aguardando GPS...";
-
-if(!navigator.geolocation){
-alert("GPS não disponível");
-return;
-}
 
 navigator.geolocation.watchPosition(pos=>{
 
@@ -59,9 +70,7 @@ if(d<p.raio){mostrar(p);}
 });
 
 },
-err=>{
-alert("Autorize a localização no navegador do tablet");
-},
+err=>{alert("Autorize a localização");},
 {enableHighAccuracy:true});
 
 }

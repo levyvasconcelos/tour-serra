@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8">
 <title>Tour Interativo Covilhã e Serra</title>
 
 <style>
-body{font-family:Arial;text-align:center;padding:20px}
-img{width:90%;max-width:400px;margin:5px}
-button{padding:15px 30px;font-size:18px}
+body{font-family:Arial;text-align:center;margin:20px;}
+button{padding:15px 30px;font-size:18px;}
+img{width:90%;max-width:500px;margin:10px 0;}
 </style>
 </head>
 
 <body>
 
-<h2>Tour Interativo Covilhã e Serra</h2>
-
+<h1>Tour Interativo Covilhã e Serra</h1>
 <button onclick="iniciar()">INICIAR TOUR</button>
 
-<p id="status"></p>
-<h3 id="local"></h3>
+<h2 id="nome"></h2>
 <p id="texto"></p>
-<div id="fotos"></div>
+<div id="imgs"></div>
 
 <script>
+
+let pontoAtual = 0;
 
 const pontos=[
 
@@ -33,9 +32,13 @@ const pontos=[
 
 {nome:"Hotel Santa Eufémia",lat:40.2734,lng:-7.5031,raio:250,texto:"Hotel tradicional da cidade.",img:["images/hotel1.jpg"]},
 
+{nome:"Igreja Nossa Senhora de Fátima",lat:40.277692,lng:-7.509809,raio:200,texto:"Importante igreja da cidade.",img:["images/fatima1.jpg"]},
+
 {nome:"Rotunda do Rato",lat:40.2771,lng:-7.5105,raio:200,texto:"Importante ponto de circulação urbana.",img:["images/rato1.jpg"]},
 
 {nome:"Museu do Lanifício",lat:40.2779,lng:-7.5085,raio:200,texto:"Museu histórico da indústria têxtil.",img:["images/lanificio1.jpg"]},
+
+{nome:"Igreja Santa Maria Maior",lat:40.280208,lng:-7.506062,raio:200,texto:"Principal igreja histórica da Covilhã.",img:["images/maria1.jpg"]},
 
 {nome:"Câmara Municipal",lat:40.2805,lng:-7.5044,raio:200,texto:"Centro administrativo da cidade.",img:["images/camara1.jpg"]},
 
@@ -45,57 +48,65 @@ const pontos=[
 
 {nome:"Penhas da Saúde",lat:40.3076,lng:-7.5486,raio:800,texto:"Zona turística de montanha.",img:["images/penhas1.jpg"]},
 
+{nome:"Edifício do Teleférico - Piornos",lat:40.314362,lng:-7.575729,raio:600,texto:"Base histórica do teleférico.",img:["images/teleferico.jpg"]},
+
+{nome:"Nossa Senhora da Boa Estrela",lat:40.322991,lng:-7.602988,raio:600,texto:"Imagem religiosa esculpida na rocha.",img:["images/boaestrela.jpg"]},
+
+{nome:"Lagoa do Viriato",lat:40.322991,lng:-7.602988,raio:600,texto:"Lago natural da Serra.",img:["images/viriato.jpg"]},
+
+{nome:"Miradouro do Vale de Loriga",lat:40.334209,lng:-7.617628,raio:800,texto:"Vista panorâmica do vale glaciar.",img:["images/loriga.jpg"]},
+
+{nome:"Estância de Ski Serra da Estrela",lat:40.330836,lng:-7.613945,raio:800,texto:"Principal centro de desportos de inverno.",img:["images/ski.jpg"]},
+
 {nome:"Vale do Zêzere",lat:40.3280,lng:-7.5867,raio:800,texto:"Grande vale glaciar.",img:["images/zezere1.jpg"]},
 
-{nome:"Lagoa Comprida",lat:40.3415,lng:-7.6128,raio:800,texto:"Lago glaciar.",img:["images/lagoa1.jpg"]},
+{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg"]},
 
-{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg"]}
+{nome:"Cascata do Poço do Inferno",lat:40.372757,lng:-7.516673,raio:800,texto:"Cascata natural emblemática.",img:["images/pocoinferno.jpg"]}
 
 ];
 
 function iniciar(){
-
-document.getElementById("status").innerHTML="Aguardando GPS...";
-
 navigator.geolocation.watchPosition(pos=>{
-
-document.getElementById("status").innerHTML="GPS ativo";
-
 let lat=pos.coords.latitude;
 let lng=pos.coords.longitude;
 
-pontos.forEach(p=>{
+if(pontoAtual < pontos.length){
+let p=pontos[pontoAtual];
 let d=dist(lat,lng,p.lat,p.lng);
-if(d<p.raio){mostrar(p);}
-});
 
-},
-err=>{alert("Autorize a localização");},
-{enableHighAccuracy:true});
+if(d < p.raio){
+mostrar(p);
+pontoAtual++;
+}
+}
 
+},{enableHighAccuracy:true});
 }
 
 function mostrar(p){
-document.getElementById("local").innerHTML=p.nome;
-document.getElementById("texto").innerHTML=p.texto;
+document.getElementById("nome").innerText=p.nome;
+document.getElementById("texto").innerText=p.texto;
 
-let f="";
-p.img.forEach(i=>{f+=`<img src="${i}">`;});
-document.getElementById("fotos").innerHTML=f;
+let html="";
+p.img.forEach(i=>{
+html+=`<img src="${i}">`;
+});
+document.getElementById("imgs").innerHTML=html;
 }
 
-function dist(lat1,lon1,lat2,lon2){
+function dist(lat1,lng1,lat2,lng2){
 let R=6371000;
 let dLat=(lat2-lat1)*Math.PI/180;
-let dLon=(lon2-lon1)*Math.PI/180;
+let dLng=(lng2-lng1)*Math.PI/180;
 let a=Math.sin(dLat/2)*Math.sin(dLat/2)+
 Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-Math.sin(dLon/2)*Math.sin(dLon/2);
-return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+Math.sin(dLng/2)*Math.sin(dLng/2);
+let c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+return R*c;
 }
 
 </script>
 
 </body>
 </html>
-

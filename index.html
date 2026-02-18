@@ -8,14 +8,17 @@
 <style>
 body{font-family:Arial;text-align:center;padding:20px}
 img{width:90%;max-width:400px;margin:5px}
+button{padding:15px 30px;font-size:18px}
 </style>
 </head>
 
 <body>
 
 <h2>Tour Interativo Covilhã e Serra</h2>
+
 <button onclick="iniciar()">INICIAR TOUR</button>
 
+<p id="status"></p>
 <h3 id="local"></h3>
 <p id="texto"></p>
 <div id="fotos"></div>
@@ -23,109 +26,44 @@ img{width:90%;max-width:400px;margin:5px}
 <script>
 
 const pontos=[
-
-// CIDADE
-{
-nome:"Rotunda do Rato",
-lat:40.2797,
-lng:-7.5035,
-raio:200,
-texto:"Importante ponto de circulação urbana e acesso central à cidade.",
-img:["images/rato1.jpg","images/rato2.jpg","images/rato3.jpg"]
-},
-
-{
-nome:"Museu do Lanifício",
-lat:40.2807,
-lng:-7.5054,
-raio:200,
-texto:"Museu histórico que preserva a tradição industrial da Covilhã.",
-img:["images/lanificio1.jpg","images/lanificio2.jpg","images/lanificio3.jpg"]
-},
-
-{
-nome:"Câmara Municipal da Covilhã",
-lat:40.2830,
-lng:-7.5030,
-raio:200,
-texto:"Edifício histórico sede administrativa do município.",
-img:["images/camara1.jpg","images/camara2.jpg","images/camara3.jpg"]
-},
-
-{
-nome:"Castelo da Covilhã",
-lat:40.2820,
-lng:-7.5055,
-raio:200,
-texto:"Antiga fortificação medieval com vista sobre a cidade.",
-img:["images/castelo1.jpg","images/castelo2.jpg","images/castelo3.jpg"]
-},
-
-{
-nome:"Parque de Campismo do Pião",
-lat:40.3140,
-lng:-7.5105,
-raio:200,
-texto:"Área natural de lazer com contacto direto com a montanha.",
-img:["images/piao1.jpg","images/piao2.jpg","images/piao3.jpg"]
-},
-
-// SERRA
-
-{
-nome:"Penhas da Saúde",
-lat:40.2995,
-lng:-7.5503,
-raio:800,
-texto:"Zona turística de montanha com hotéis e miradouros naturais.",
-img:["images/penhas1.jpg","images/penhas2.jpg","images/penhas3.jpg"]
-},
-
-{
-nome:"Vale Glaciar do Zêzere",
-lat:40.3066,
-lng:-7.5450,
-raio:800,
-texto:"Um dos maiores vales glaciares da Europa.",
-img:["images/zezere1.jpg","images/zezere2.jpg","images/zezere3.jpg"]
-},
-
-{
-nome:"Lagoa Comprida",
-lat:40.3415,
-lng:-7.6128,
-raio:800,
-texto:"Grande lago glaciar rodeado pela paisagem montanhosa.",
-img:["images/lagoa1.jpg","images/lagoa2.jpg","images/lagoa3.jpg"]
-},
-
-{
-nome:"Torre Serra da Estrela",
-lat:40.3213,
-lng:-7.6122,
-raio:800,
-texto:"Ponto mais alto de Portugal continental.",
-img:["images/torre1.jpg","images/torre2.jpg","images/torre3.jpg"]
-}
-
+{nome:"Rotunda do Rato",lat:40.2797,lng:-7.5035,raio:200,texto:"Importante ponto de circulação urbana.",img:["images/rato1.jpg","images/rato2.jpg","images/rato3.jpg"]},
+{nome:"Museu do Lanifício",lat:40.2807,lng:-7.5054,raio:200,texto:"Museu histórico da indústria têxtil.",img:["images/lanificio1.jpg","images/lanificio2.jpg","images/lanificio3.jpg"]},
+{nome:"Câmara Municipal",lat:40.2830,lng:-7.5030,raio:200,texto:"Centro administrativo da cidade.",img:["images/camara1.jpg","images/camara2.jpg","images/camara3.jpg"]},
+{nome:"Castelo da Covilhã",lat:40.2820,lng:-7.5055,raio:200,texto:"Fortificação medieval.",img:["images/castelo1.jpg","images/castelo2.jpg","images/castelo3.jpg"]},
+{nome:"Parque do Pião",lat:40.3140,lng:-7.5105,raio:200,texto:"Zona natural de lazer.",img:["images/piao1.jpg","images/piao2.jpg","images/piao3.jpg"]},
+{nome:"Penhas da Saúde",lat:40.2995,lng:-7.5503,raio:800,texto:"Zona turística de montanha.",img:["images/penhas1.jpg","images/penhas2.jpg","images/penhas3.jpg"]},
+{nome:"Vale do Zêzere",lat:40.3066,lng:-7.5450,raio:800,texto:"Grande vale glaciar.",img:["images/zezere1.jpg","images/zezere2.jpg","images/zezere3.jpg"]},
+{nome:"Lagoa Comprida",lat:40.3415,lng:-7.6128,raio:800,texto:"Lago glaciar.",img:["images/lagoa1.jpg","images/lagoa2.jpg","images/lagoa3.jpg"]},
+{nome:"Torre Serra da Estrela",lat:40.3213,lng:-7.6122,raio:800,texto:"Ponto mais alto de Portugal.",img:["images/torre1.jpg","images/torre2.jpg","images/torre3.jpg"]}
 ];
 
 function iniciar(){
+
+document.getElementById("status").innerHTML="Aguardando GPS...";
+
+if(!navigator.geolocation){
+alert("GPS não disponível");
+return;
+}
+
 navigator.geolocation.watchPosition(pos=>{
+
+document.getElementById("status").innerHTML="GPS ativo";
+
 let lat=pos.coords.latitude;
 let lng=pos.coords.longitude;
 
 pontos.forEach(p=>{
-
 let d=dist(lat,lng,p.lat,p.lng);
-
-if(d<p.raio){
-mostrar(p);
-}
-
+if(d<p.raio){mostrar(p);}
 });
 
-});
+},
+err=>{
+alert("Autorize a localização no navegador do tablet");
+},
+{enableHighAccuracy:true});
+
 }
 
 function mostrar(p){
@@ -133,9 +71,7 @@ document.getElementById("local").innerHTML=p.nome;
 document.getElementById("texto").innerHTML=p.texto;
 
 let f="";
-p.img.forEach(i=>{
-f+=`<img src="${i}">`;
-});
+p.img.forEach(i=>{f+=`<img src="${i}">`;});
 document.getElementById("fotos").innerHTML=f;
 }
 

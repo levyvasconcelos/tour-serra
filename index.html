@@ -1,68 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tour Covilhã</title>
 
 <link rel="manifest" href="manifest.json">
 
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
+navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tour Serra da Estrela</title>
-
 <style>
-body{font-family:Arial;text-align:center;padding:30px;}
-button{font-size:22px;padding:15px 30px;}
+body{font-family:Arial;text-align:center;padding:20px;}
+img{width:95%;margin-top:10px;border-radius:12px;}
 </style>
+</head>
+
 <body>
 
-<h2>Tour Interativo Serra da Estrela</h2>
+<h2>Tour Interativo Covilhã</h2>
 
-<button onclick="iniciar()">INICIAR TOUR</button>
+<button onclick="iniciar()" style="font-size:22px;padding:15px 30px">
+INICIAR TOUR
+</button>
 
-<p id="info">Aguardando início...</p>
-
-<img id="foto" width="90%" style="margin-top:20px; display:none;">
+<div id="info" style="margin-top:20px"></div>
 
 <script>
 
-  const pontos = [
-{nome:"Varandas dos Carqueijais",
-lat:40.311,lng:-7.553,
-foto:"https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-texto:"Miradouro panorâmico com vista ampla sobre o vale da Cova da Beira."},
+const pontos = [
 
-{nome:"Penhas da Saúde",
-lat:40.323,lng:-7.563,
-foto:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-texto:"Penhas da Saúde é uma localidade no município da Covilhã, Portugal. Esta aldeia de montanha está localizada no coração da Serra da Estrela, agraciada com um belo cenário montanhoso, a uma altitude de 1.500 metros. É principalmente um resort de inverno."},
+{
+nome:"Rotunda do Rato",
+lat:40.2808,
+lng:-7.5043,
+descricao:"Importante ponto de circulação urbana e acesso central à cidade da Covilhã.",
+info:"Paragem recomendada: 5 minutos",
+fotos:["imagens/rato1.jpg","imagens/rato2.jpg","imagens/rato3.jpg"]
+},
 
-{nome:"Piornos",
-lat:40.338,lng:-7.575,
-foto:"https://images.unsplash.com/photo-1469474968028-56623f02e42e",
-texto:"Ponto elevado com vistas extensas da Serra da Estrela."},
+{
+nome:"Museu do Lanifício",
+lat:40.2832,
+lng:-7.5030,
+descricao:"Museu dedicado à história industrial dos lanifícios, elemento fundamental da identidade da Covilhã.",
+info:"Paragem recomendada: 20 minutos",
+fotos:["imagens/lanificio1.jpg","imagens/lanificio2.jpg","imagens/lanificio3.jpg"]
+},
 
-{nome:"Covão d’Ametade",
-lat:40.349,lng:-7.589,
-foto:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
-texto:"Vale glaciar de grande beleza natural e área de descanso."},
+{
+nome:"Câmara Municipal da Covilhã",
+lat:40.2816,
+lng:-7.5018,
+descricao:"Edifício histórico localizado no centro administrativo e cultural da cidade.",
+info:"Paragem recomendada: 10 minutos",
+fotos:["imagens/camara1.jpg","imagens/camara2.jpg","imagens/camara3.jpg"]
+},
 
-{nome:"Senhora da Boa Estrela",
-lat:40.360,lng:-7.598,
-foto:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
-texto:"Monumento esculpido numa rocha, com sete metros de altura, localizada no Covão do Boi, a 1850 metros de altitude. A escultura é da autoria de António Duarte e representa a Senhora da Boa estrela, a padroeira dos pastores. Foi inaugurada em 1946. As festividades acontecem no segundo domingo de agosto."},
+{
+nome:"Castelo da Covilhã",
+lat:40.2825,
+lng:-7.5039,
+descricao:"Local histórico que remonta à época medieval e oferece vista panorâmica da cidade.",
+info:"Paragem recomendada: 15 minutos",
+fotos:["imagens/castelo1.jpg","imagens/castelo2.jpg","imagens/castelo3.jpg"]
+},
 
-{nome:"Torre",
-lat:40.321,lng:-7.612,
-foto:"https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-texto:"Ponto mais alto de Portugal continental, com neve frequente no inverno."}
+{
+nome:"Parque de Campismo do Pião",
+lat:40.2650,
+lng:-7.5280,
+descricao:"Área natural de lazer localizada na Serra da Estrela, ideal para atividades ao ar livre.",
+info:"Paragem recomendada: 20 minutos",
+fotos:["imagens/piao1.jpg","imagens/piao2.jpg","imagens/piao3.jpg"]
+}
+
 ];
 
+function distanciaMetros(lat1, lon1, lat2, lon2) {
+const R = 6371000;
+const φ1 = lat1 * Math.PI/180;
+const φ2 = lat2 * Math.PI/180;
+const Δφ = (lat2-lat1) * Math.PI/180;
+const Δλ = (lon2-lon1) * Math.PI/180;
 
-  
+const a = Math.sin(Δφ/2)*Math.sin(Δφ/2) +
+Math.cos(φ1)*Math.cos(φ2) *
+Math.sin(Δλ/2)*Math.sin(Δλ/2);
+
+const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+return R * c;
+}
 
 function iniciar(){
 
@@ -74,17 +104,24 @@ const lat = pos.coords.latitude;
 const lng = pos.coords.longitude;
 
 pontos.forEach(p=>{
-let d = Math.sqrt((lat-p.lat)**2+(lng-p.lng)**2);
-if(d < 0.01){
+
+let d = distanciaMetros(lat,lng,p.lat,p.lng);
+
+if(d < 200){
+
+let galeria="";
+p.fotos.forEach(f=>{
+galeria += "<img src='"+f+"'>";
+});
 
 document.getElementById("info").innerHTML =
-"Você chegou em: " + p.nome + "<br>" + p.texto;
-
-
-document.getElementById("foto").src = p.foto;
-document.getElementById("foto").style.display="block";
+"<h2>"+p.nome+"</h2>" +
+"<p>"+p.descricao+"</p>" +
+"<p><b>"+p.info+"</b></p>" +
+galeria;
 
 }
+
 });
 
 });
@@ -95,10 +132,3 @@ document.getElementById("foto").style.display="block";
 
 </body>
 </html>
-
-
-
-
-
-
-

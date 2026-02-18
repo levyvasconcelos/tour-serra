@@ -5,103 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tour Interativo Covilhã e Serra</title>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
-body{
-font-family:Arial;
-text-align:center;
-background:#f4f4f4;
-margin:0;
-padding:20px;
-}
-
-button{
-padding:15px 30px;
-font-size:18px;
-margin:20px;
-cursor:pointer;
-}
-
-#local{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-img{
-width:100%;
-max-width:400px;
-border-radius:10px;
-margin-top:10px;
-}
+body{margin:0;font-family:Arial;background:#f4f4f4;text-align:center;}
+#map{height:40vh;width:100%;}
+button{padding:15px 30px;margin:10px;font-size:18px;}
+#info{background:white;padding:15px;margin:10px;border-radius:8px;}
+#debug{background:#222;color:#0f0;padding:10px;font-size:12px;text-align:left;}
+img{max-width:100%;border-radius:8px;margin-top:10px;}
 </style>
 </head>
 
 <body>
 
-<h1>Tour Interativo Covilhã e Serra</h1>
+<h2>Tour Interativo Covilhã e Serra</h2>
 
 <button onclick="iniciar()">INICIAR TOUR</button>
 
-<p id="status"></p>
+<div id="map"></div>
 
-<div id="local"></div>
+<div id="info"></div>
+
+<div id="debug"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 
-let watchId=null;
+let map=L.map('map').setView([40.28,-7.50],13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map);
+
+let marcadorUsuario=null;
 let ultimoPonto=null;
 
 const pontos=[
 
-{nome:"Central de Camionagem",lat:40.2735,lng:-7.4983,raio:250,texto:"Principal terminal rodoviário.",img:"images/camionagem1.jpg"},
-
-{nome:"Serra Shopping",lat:40.2710,lng:-7.5023,raio:250,texto:"Maior centro comercial.",img:"images/shopping1.jpg"},
-
-{nome:"Hotel Santa Eufémia",lat:40.2734,lng:-7.5031,raio:250,texto:"Hotel tradicional.",img:"images/hotel1.jpg"},
-
-{nome:"Rotunda do Rato",lat:40.2771,lng:-7.5105,raio:200,texto:"Importante ponto urbano.",img:"images/rato1.jpg"},
-
-{nome:"Museu do Lanifício",lat:40.2779,lng:-7.5085,raio:200,texto:"Museu da indústria têxtil.",img:"images/lanificio1.jpg"},
-
-{nome:"Igreja N. Senhora de Fátima",lat:40.277692,lng:-7.509809,raio:200,texto:"Igreja moderna da cidade.",img:"images/fatima1.jpg"},
-
-{nome:"Igreja Santa Maria Maior",lat:40.280208,lng:-7.506062,raio:200,texto:"Igreja histórica.",img:"images/santamaria1.jpg"},
-
-{nome:"Câmara Municipal",lat:40.2805,lng:-7.5044,raio:200,texto:"Centro administrativo.",img:"images/camara1.jpg"},
-
-{nome:"Castelo da Covilhã",lat:40.2817,lng:-7.5086,raio:200,texto:"Fortificação medieval.",img:"images/castelo1.jpg"},
-
-{nome:"Parque do Pião",lat:40.2872,lng:-7.5271,raio:300,texto:"Zona natural.",img:"images/piao1.jpg"},
-
-{nome:"Penhas da Saúde",lat:40.3076,lng:-7.5486,raio:800,texto:"Zona turística de montanha.",img:"images/penhas1.jpg"},
-
-{nome:"Edifício Teleférico Piornos",lat:40.314362,lng:-7.575729,raio:800,texto:"Acesso ao teleférico.",img:"images/piornos1.jpg"},
-
-{nome:"Nossa Senhora da Boa Estrela",lat:40.322991,lng:-7.602988,raio:800,texto:"Imagem escavada na rocha.",img:"images/boaestrela1.jpg"},
-
-{nome:"Lagoa do Viriato",lat:40.322991,lng:-7.602988,raio:800,texto:"Zona natural da serra.",img:"images/viriato1.jpg"},
-
-{nome:"Vale do Zêzere",lat:40.3280,lng:-7.5867,raio:800,texto:"Grande vale glaciar.",img:"images/zezere1.jpg"},
-
-{nome:"Miradouro Vale de Loriga",lat:40.334209,lng:-7.617628,raio:800,texto:"Vista panorâmica.",img:"images/loriga1.jpg"},
-
-{nome:"Estância de Ski",lat:40.330836,lng:-7.613945,raio:800,texto:"Zona de neve.",img:"images/ski1.jpg"},
-
-{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800,texto:"Ponto mais alto de Portugal.",img:"images/torre1.jpg"},
-
-{nome:"Cascata Poço do Inferno",lat:40.372757,lng:-7.516673,raio:800,texto:"Cascata natural.",img:"images/pocoinferno1.jpg"}
+{nome:"Central de Camionagem",lat:40.2735,lng:-7.4983,raio:250},
+{nome:"Serra Shopping",lat:40.2710,lng:-7.5023,raio:250},
+{nome:"Hotel Santa Eufémia",lat:40.2734,lng:-7.5031,raio:250},
+{nome:"Rotunda do Rato",lat:40.2771,lng:-7.5105,raio:200},
+{nome:"Museu do Lanifício",lat:40.2779,lng:-7.5085,raio:200},
+{nome:"Igreja N. Senhora de Fátima",lat:40.277692,lng:-7.509809,raio:200},
+{nome:"Igreja Santa Maria Maior",lat:40.280208,lng:-7.506062,raio:200},
+{nome:"Câmara Municipal",lat:40.2805,lng:-7.5044,raio:200},
+{nome:"Castelo da Covilhã",lat:40.2817,lng:-7.5086,raio:200},
+{nome:"Parque do Pião",lat:40.2872,lng:-7.5271,raio:300},
+{nome:"Penhas da Saúde",lat:40.3076,lng:-7.5486,raio:800},
+{nome:"Edifício Teleférico Piornos",lat:40.314362,lng:-7.575729,raio:800},
+{nome:"Nossa Senhora da Boa Estrela",lat:40.322991,lng:-7.602988,raio:800},
+{nome:"Lagoa do Viriato",lat:40.322991,lng:-7.602988,raio:800},
+{nome:"Vale do Zêzere",lat:40.3280,lng:-7.5867,raio:800},
+{nome:"Miradouro Vale de Loriga",lat:40.334209,lng:-7.617628,raio:800},
+{nome:"Estância de Ski",lat:40.330836,lng:-7.613945,raio:800},
+{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800},
+{nome:"Cascata Poço do Inferno",lat:40.372757,lng:-7.516673,raio:800}
 
 ];
+
+pontos.forEach(p=>{
+L.marker([p.lat,p.lng]).addTo(map).bindPopup(p.nome);
+});
 
 function iniciar(){
 
 if(navigator.geolocation){
 
-document.getElementById("status").innerHTML="Solicitando GPS...";
-
-watchId=navigator.geolocation.watchPosition(
-verificar,
+navigator.geolocation.watchPosition(
+atualizar,
 erro,
 {enableHighAccuracy:true,maximumAge:0,timeout:15000}
 );
@@ -112,64 +86,64 @@ alert("GPS não suportado");
 
 }
 
-function verificar(pos){
+function atualizar(pos){
 
 let lat=pos.coords.latitude;
 let lng=pos.coords.longitude;
 let precisao=pos.coords.accuracy;
 
-document.getElementById("status").innerHTML=
-"GPS ativo | Precisão: "+Math.round(precisao)+"m";
-
-if(precisao>120){
-return;
+if(!marcadorUsuario){
+marcadorUsuario=L.marker([lat,lng]).addTo(map);
+}else{
+marcadorUsuario.setLatLng([lat,lng]);
 }
+
+map.setView([lat,lng]);
 
 let maisProximo=null;
-let menorDistancia=999999;
+let menorDist=999999;
 
-for(let p of pontos){
-
+pontos.forEach(p=>{
 let d=dist(lat,lng,p.lat,p.lng);
-
-if(d<p.raio && d<menorDistancia){
+if(d<p.raio && d<menorDist){
 maisProximo=p;
-menorDistancia=d;
+menorDist=d;
 }
-
-}
+});
 
 if(maisProximo && maisProximo.nome!==ultimoPonto){
 
 ultimoPonto=maisProximo.nome;
 
-document.getElementById("local").innerHTML=
-"<h2>"+maisProximo.nome+"</h2>"+
-"<p>"+maisProximo.texto+"</p>"+
-"<img src='"+maisProximo.img+"'>";
+document.getElementById("info").innerHTML=
+"<h3>"+maisProximo.nome+"</h3>"+
+"<p>Dentro do raio de ativação.</p>";
 
 }
+
+document.getElementById("debug").innerHTML=
+"Lat: "+lat+"<br>"+
+"Lng: "+lng+"<br>"+
+"Precisão: "+Math.round(precisao)+"m<br>"+
+"Ponto ativo: "+(ultimoPonto?ultimoPonto:"Nenhum")+"<br>"+
+"Distância atual: "+Math.round(menorDist)+"m";
 
 }
 
 function erro(){
-document.getElementById("status").innerHTML="Erro ao obter GPS";
+document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
 
 function dist(lat1,lon1,lat2,lon2){
-
 const R=6371000;
 const dLat=(lat2-lat1)*Math.PI/180;
 const dLon=(lon2-lon1)*Math.PI/180;
-
 const a=
 Math.sin(dLat/2)*Math.sin(dLat/2)+
 Math.cos(lat1*Math.PI/180)*
 Math.cos(lat2*Math.PI/180)*
 Math.sin(dLon/2)*Math.sin(dLon/2);
-
 const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-
 return R*c;
 }
 

@@ -309,9 +309,20 @@ if(maisProximo && maisProximo.nome!==ultimoPonto){
 
 ultimoPonto=maisProximo.nome;
 
-document.getElementById("info").innerHTML=
-"<h3>"+maisProximo.nome+"</h3>"+
-"<p>Dentro do raio de ativação.</p>";
+let html="<h3>"+maisProximo.nome+"</h3>";
+
+if(maisProximo.texto){
+html+="<p>"+maisProximo.texto+"</p>";
+}
+
+if(maisProximo.img){
+maisProximo.img.forEach(f=>{
+html+='<img src="'+f+'">';
+});
+}
+
+document.getElementById("info").innerHTML=html;
+
 
 }
 
@@ -345,6 +356,7 @@ return R*c;
 
 </body>
 </html>
+
 
 
 

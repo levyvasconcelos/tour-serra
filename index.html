@@ -314,10 +314,12 @@ if(maisProximo.texto){
 html+="<p>"+maisProximo.texto+"</p>";
 }
 
-if(maisProximo.img){
+if(maisProximo.img && maisProximo.img.length){
+html+='<div class="galeria">';
 maisProximo.img.forEach(f=>{
 html+='<img src="'+f+'">';
 });
+html+='</div>';
 }
 
 document.getElementById("info").innerHTML=html;
@@ -355,6 +357,7 @@ return R*c;
 
 </body>
 </html>
+
 
 
 

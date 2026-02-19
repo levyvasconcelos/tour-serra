@@ -10,43 +10,21 @@
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4;text-align:center;}
 #map{height:40vh;width:100%;}
-button{padding:15px 30px;margin:10px;font-size:18px;cursor:pointer;}
+button{padding:14px 26px;margin:8px;font-size:16px;cursor:pointer;border-radius:8px;border:none;}
 #info{background:white;padding:15px;margin:10px;border-radius:8px;}
 #debug{background:#222;color:#0f0;padding:10px;font-size:12px;text-align:left;}
-img{max-width:100%;border-radius:8px;margin-top:10px;}
+.btn-stop{background:#c62828;color:white;}
+.btn-start{background:#2e7d32;color:white;}
 
-/* ===== CARROSSEL ===== */
-.galeria{
-position:relative;
-overflow:hidden;
-max-width:100%;
-}
-
-.carousel{
-display:flex;
-transition:transform .4s ease;
-}
-
-.carousel img{
-min-width:100%;
-border-radius:8px;
-}
-
+.galeria{position:relative;overflow:hidden;}
+.carousel{display:flex;transition:transform .4s ease;}
+.carousel img{min-width:100%;border-radius:8px;}
 .car-btn{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-background:rgba(0,0,0,.5);
-color:white;
-border:none;
-padding:8px 12px;
-cursor:pointer;
-font-size:18px;
-z-index:5;
+position:absolute;top:50%;transform:translateY(-50%);
+background:rgba(0,0,0,.5);color:white;border:none;
+padding:8px 12px;font-size:18px;z-index:5;
 }
-
-.prev{left:5px;}
-.next{right:5px;}
+.prev{left:5px;} .next{right:5px;}
 </style>
 </head>
 
@@ -54,7 +32,8 @@ z-index:5;
 
 <h2>Tour Interativo Covilhã e Serra</h2>
 
-<button onclick="iniciar()">INICIAR TOUR</button>
+<button class="btn-start" onclick="iniciar()">INICIAR TOUR</button>
+<button class="btn-stop" onclick="parar()">PARAR TOUR</button>
 
 <div id="info"></div>
 <div id="map"></div>
@@ -75,184 +54,63 @@ let marcadorUsuario=null;
 let ultimoPonto=null;
 let pontoAtivoObj=null;
 let watchId=null;
+let audioAtual=null;
 
-const HISTERESIS=25; // metros anti-piscar
+const HISTERESIS=25;
 
-// ================= PONTOS =================
+// ================= PONTOS (exemplo) =================
 const pontos=[
 
 {
 nome:"Central de Camionagem",
 lat:40.2735,lng:-7.4983,raio:120,
-texto:`Principal terminal rodoviário da Covilhã.
-
-📍 Inaugurada para melhorar a mobilidade regional.
-
-🚌 Bom ponto para iniciar o tour.`,
-img:["images/camionagem1.png"]
+texto:`Principal terminal rodoviário da Covilhã.`,
+img:["images/camionagem1.png"],
+audio:"audio/camionagem.mp3"
 },
 
 {
 nome:"Serra Shopping",
 lat:40.2710,lng:-7.5023,raio:120,
-texto:`O maior centro comercial da Covilhã.
-
-🛍️ Lojas, restauração e cinema.`,
-img:["images/shopping1.jpg"]
-},
-
-{
-nome:"Hotel Santa Eufémia",
-lat:40.2734,lng:-7.5031,raio:120,
-texto:`Hotel tradicional muito procurado.`,
-img:["images/hotel1.jpg"]
-},
-
-{
-nome:"Rotunda do Rato",
-lat:40.2771,lng:-7.5105,raio:100,
-texto:`Importante nó de circulação urbana.`,
-img:["images/rato1.jpg"]
-},
-
-{
-nome:"Museu do Lanifício",
-lat:40.2779,lng:-7.5085,raio:100,
-texto:`Museu da tradição têxtil da Covilhã.`,
-img:["images/lanificio1.jpg"]
-},
-
-{
-nome:"Igreja N. Senhora de Fátima",
-lat:40.277692,lng:-7.509809,raio:100,
-texto:`Igreja moderna muito frequentada.`,
-img:["images/fatima1.jpg"]
-},
-
-{
-nome:"Igreja Santa Maria Maior",
-lat:40.280208,lng:-7.506062,raio:100,
-texto:`Igreja Matriz da Covilhã.`,
-img:["images/santa-maria.jpg"]
-},
-
-{
-nome:"Câmara Municipal",
-lat:40.2805,lng:-7.5044,raio:100,
-texto:`Paços do Concelho da Covilhã.`,
-img:["images/camara1.jpg"]
-},
-
-{
-nome:"Castelo da Covilhã",
-lat:40.2817,lng:-7.5086,raio:120,
-texto:`Antiga fortificação medieval.`,
-img:["images/castelo1.jpg"]
-},
-
-{
-nome:"Parque do Pião",
-lat:40.2872,lng:-7.5271,raio:200,
-texto:`Zona verde muito apreciada.`,
-img:["images/piao1.jpg"]
-},
-
-{
-nome:"Penhas da Saúde",
-lat:40.3076,lng:-7.5486,raio:700,
-texto:`Importante estância turística.`,
-img:["images/penhas1.jpg"]
-},
-
-{
-nome:"Edifício Teleférico Piornos",
-lat:40.314362,lng:-7.575729,raio:700,
-texto:`Zona de acesso às áreas altas.`,
-img:["images/teleferico1.jpg"]
-},
-
-{
-nome:"Nossa Senhora da Boa Estrela",
-lat:40.322991,lng:-7.602988,raio:700,
-texto:`Imagem esculpida na rocha.`,
-img:["images/boaestrela1.jpg"]
-},
-
-{
-nome:"Lagoa do Viriato",
-lat:40.322991,lng:-7.602988,raio:700,
-texto:`Zona natural de grande beleza.`,
-img:["images/viriato1.jpg"]
-},
-
-{
-nome:"Vale do Zêzere",
-lat:40.3280,lng:-7.5867,raio:700,
-texto:`Impressionante vale glaciar.`,
-img:["images/zezere1.jpg"]
-},
-
-{
-nome:"Miradouro Vale de Loriga",
-lat:40.334209,lng:-7.617628,raio:700,
-texto:`Vista panorâmica sobre o vale.`,
-img:["images/loriga1.jpg"]
-},
-
-{
-nome:"Estância de Ski",
-lat:40.330836,lng:-7.613945,raio:700,
-texto:`Principal estância de inverno.`,
-img:["images/ski1.jpg"]
-},
-
-{
-nome:"Torre Serra da Estrela",
-lat:40.3219,lng:-7.6127,raio:700,
-texto:`Ponto mais alto de Portugal continental.`,
-img:["images/torre1.jpg"]
-},
-
-{
-nome:"Cascata Poço do Inferno",
-lat:40.372757,lng:-7.516673,raio:700,
-texto:`Uma das cascatas mais bonitas.`,
-img:["images/pocoinferno1.jpg"]
+texto:`O maior centro comercial da Covilhã.`,
+img:["images/shopping1.jpg"],
+audio:"audio/shopping.mp3"
 }
 
 ];
 
-// ===== markers e círculos =====
+// ===== markers =====
 pontos.forEach(p=>{
 L.marker([p.lat,p.lng]).addTo(map).bindPopup(p.nome);
-
-L.circle([p.lat,p.lng],{
-radius:p.raio,
-color:"#0077ff",
-fillOpacity:0.08
-}).addTo(map);
+L.circle([p.lat,p.lng],{radius:p.raio,color:"#0077ff",fillOpacity:0.08}).addTo(map);
 });
 
-// ================= INICIAR =================
+// ================= CONTROLO TOUR =================
 function iniciar(){
 
 if(watchId!==null) return;
 
 if(navigator.geolocation){
-
 watchId=navigator.geolocation.watchPosition(
-atualizar,
-erro,
+atualizar,erro,
 {enableHighAccuracy:true,maximumAge:1000,timeout:15000}
 );
-
-}else{
-alert("GPS não suportado");
-}
+}else alert("GPS não suportado");
 
 }
 
-// ================= ATUALIZAR =================
+function parar(){
+if(watchId!==null){
+navigator.geolocation.clearWatch(watchId);
+watchId=null;
+}
+if(audioAtual){
+audioAtual.pause();
+audioAtual=null;
+}
+}
+
+// ================= ATUALIZAÇÃO =================
 function atualizar(pos){
 
 let lat=pos.coords.latitude;
@@ -261,9 +119,7 @@ let precisao=pos.coords.accuracy;
 
 if(!marcadorUsuario){
 marcadorUsuario=L.marker([lat,lng]).addTo(map);
-}else{
-marcadorUsuario.setLatLng([lat,lng]);
-}
+}else marcadorUsuario.setLatLng([lat,lng]);
 
 map.panTo([lat,lng]);
 
@@ -273,8 +129,7 @@ let menorDist=Infinity;
 pontos.forEach(p=>{
 let d=dist(lat,lng,p.lat,p.lng);
 if(d<p.raio && d<menorDist){
-maisProximo=p;
-menorDist=d;
+maisProximo=p; menorDist=d;
 }
 });
 
@@ -286,26 +141,46 @@ maisProximo=pontoAtivoObj;
 }
 }
 
+// novo ponto
 if(maisProximo && maisProximo.nome!==ultimoPonto){
 ultimoPonto=maisProximo.nome;
 pontoAtivoObj=maisProximo;
+
 mostrarInfo(maisProximo);
+tocarAudio(maisProximo);
+vibrar();
 }
 
 document.getElementById("debug").innerHTML=
-"Lat: "+lat+"<br>"+
-"Lng: "+lng+"<br>"+
 "Precisão: "+Math.round(precisao)+"m<br>"+
-"Ponto ativo: "+(ultimoPonto||"Nenhum")+"<br>"+
-"Distância atual: "+Math.round(menorDist)+"m";
+"Ponto ativo: "+(ultimoPonto||"Nenhum");
+}
 
+// ================= ÁUDIO =================
+function tocarAudio(ponto){
+
+if(!ponto.audio) return;
+
+if(audioAtual){
+audioAtual.pause();
+}
+
+audioAtual=new Audio(ponto.audio);
+audioAtual.preload="auto";
+audioAtual.play().catch(()=>{});
+}
+
+// ================= VIBRAÇÃO =================
+function vibrar(){
+if(navigator.vibrate){
+navigator.vibrate([200,100,200]);
+}
 }
 
 // ================= INFO + CARROSSEL =================
 function mostrarInfo(ponto){
 
 let html="<h3>"+ponto.nome+"</h3>";
-
 if(ponto.texto) html+="<p>"+ponto.texto+"</p>";
 
 if(ponto.img && ponto.img.length){
@@ -318,41 +193,29 @@ html+=`
 <div class="carousel" id="${id}">
 `;
 
-ponto.img.forEach(f=>{
-html+=`<img src="${f}">`;
-});
+ponto.img.forEach(f=> html+=`<img src="${f}">`);
 
 html+=`
 </div>
 <button class="car-btn next" onclick="mover('${id}',1)">›</button>
-</div>
-`;
+</div>`;
 }
 
 document.getElementById("info").innerHTML=html;
 }
 
-// ================= CONTROLO CARROSSEL =================
+// ================= CARROSSEL =================
 const carIndex={};
 
 function mover(id,dir){
 const el=document.getElementById(id);
 if(!el) return;
-
 const total=el.children.length;
 if(!(id in carIndex)) carIndex[id]=0;
-
 carIndex[id]+=dir;
-
 if(carIndex[id]<0) carIndex[id]=total-1;
 if(carIndex[id]>=total) carIndex[id]=0;
-
 el.style.transform=`translateX(-${carIndex[id]*100}%)`;
-}
-
-// ================= ERRO =================
-function erro(){
-document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
 
 // ================= DISTÂNCIA =================
@@ -360,16 +223,16 @@ function dist(lat1,lon1,lat2,lon2){
 const R=6371000;
 const dLat=(lat2-lat1)*Math.PI/180;
 const dLon=(lon2-lon1)*Math.PI/180;
-const a=
-Math.sin(dLat/2)*Math.sin(dLat/2)+
-Math.cos(lat1*Math.PI/180)*
-Math.cos(lat2*Math.PI/180)*
-Math.sin(dLon/2)*Math.sin(dLon/2);
-const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-return R*c;
+const a=Math.sin(dLat/2)**2+
+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
+Math.sin(dLon/2)**2;
+return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+}
+
+function erro(){
+document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
 
 </script>
-
 </body>
 </html>

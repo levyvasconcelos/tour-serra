@@ -44,44 +44,222 @@ let ultimoPonto=null;
 
 const pontos=[
 
-{nome:"Central de Camionagem",
+{
+nome:"Central de Camionagem",
 lat:40.2735,
 lng:-7.4983,
 raio:120,
 texto:`Principal terminal rodoviário da Covilhã.
 
-📍 Inaugurada para melhorar a mobilidade regional, esta central liga a cidade a vários destinos nacionais.
+📍 Inaugurada para melhorar a mobilidade regional, liga a cidade a vários destinos nacionais.
 
-🚌 Dica: aqui é um bom ponto para iniciar o tour pela proximidade ao centro.`,
+🚌 Dica: bom ponto para iniciar o tour pela proximidade ao centro.`,
 img:["images/camionagem1.png"]
 },
-{nome:"Serra Shopping",lat:40.2710,lng:-7.5023,raio:250},
-{nome:"Hotel Santa Eufémia",lat:40.2734,lng:-7.5031,raio:250},
-{nome:"Rotunda do Rato",lat:40.2771,lng:-7.5105,raio:200},
-{nome:"Museu do Lanifício",lat:40.2779,lng:-7.5085,raio:200},
-{nome:"Igreja N. Senhora de Fátima",lat:40.277692,lng:-7.509809,raio:200},
-  
-{nome:"Igreja Santa Maria Maior",
-lat:40.280208,lng:-7.506062,raio:100,
-texto:'A Igreja Matriz da Covilhã foi edificada no séc. XIX no local da antiga Capela de Santa Maria do Castelo, 
-datada do séc. XVI. O revestimento azulejar que cobre completamente a fachada com cenas da vida da Virgem foi aplicado em 1940.',
-img:["images/santa-maria.jpg"]},
-  
-{nome:"Câmara Municipal",lat:40.2805,lng:-7.5044,raio:200},
-{nome:"Castelo da Covilhã",lat:40.2817,lng:-7.5086,raio:200},
-{nome:"Parque do Pião",lat:40.2872,lng:-7.5271,raio:300},
-{nome:"Penhas da Saúde",lat:40.3076,lng:-7.5486,raio:800},
-{nome:"Edifício Teleférico Piornos",lat:40.314362,lng:-7.575729,raio:800},
-{nome:"Nossa Senhora da Boa Estrela",lat:40.322991,lng:-7.602988,raio:800},
-{nome:"Lagoa do Viriato",lat:40.322991,lng:-7.602988,raio:800},
-{nome:"Vale do Zêzere",lat:40.3280,lng:-7.5867,raio:800},
-{nome:"Miradouro Vale de Loriga",lat:40.334209,lng:-7.617628,raio:800},
-{nome:"Estância de Ski",lat:40.330836,lng:-7.613945,raio:800},
-{nome:"Torre Serra da Estrela",lat:40.3219,lng:-7.6127,raio:800},
-{nome:"Cascata Poço do Inferno",lat:40.372757,lng:-7.516673,raio:800}
+
+{
+nome:"Serra Shopping",
+lat:40.2710,
+lng:-7.5023,
+raio:120,
+texto:`O maior centro comercial da Covilhã.
+
+🛍️ Aqui encontra lojas, restauração e cinema.
+
+📍 Ponto de referência moderno da cidade.`,
+img:["images/shopping1.jpg"]
+},
+
+{
+nome:"Hotel Santa Eufémia",
+lat:40.2734,
+lng:-7.5031,
+raio:120,
+texto:`Hotel tradicional muito procurado por visitantes da Serra da Estrela.
+
+🏨 Boa localização para explorar a cidade.`,
+img:["images/hotel1.jpg"]
+},
+
+{
+nome:"Rotunda do Rato",
+lat:40.2771,
+lng:-7.5105,
+raio:100,
+texto:`Importante nó de circulação urbana da Covilhã.
+
+🚗 Liga várias zonas centrais da cidade.`,
+img:["images/rato1.jpg"]
+},
+
+{
+nome:"Museu do Lanifício",
+lat:40.2779,
+lng:-7.5085,
+raio:100,
+texto:`Museu dedicado à forte tradição têxtil da Covilhã.
+
+🧶 A cidade foi um dos maiores centros lanifícios de Portugal.`,
+img:["images/lanificio1.jpg"]
+},
+
+{
+nome:"Igreja N. Senhora de Fátima",
+lat:40.277692,
+lng:-7.509809,
+raio:100,
+texto:`Igreja moderna muito frequentada pela comunidade local.
+
+⛪ Espaço de culto e referência religiosa.`,
+img:["images/fatima1.jpg"]
+},
+
+{
+nome:"Igreja Santa Maria Maior",
+lat:40.280208,
+lng:-7.506062,
+raio:100,
+texto:`Igreja Matriz da Covilhã, edificada no século XIX.
+
+🎨 Destaca-se o revestimento azulejar com cenas da vida da Virgem.`,
+img:["images/santa-maria.jpg"]
+},
+
+{
+nome:"Câmara Municipal",
+lat:40.2805,
+lng:-7.5044,
+raio:100,
+texto:`Edifício dos Paços do Concelho da Covilhã.
+
+🏛️ Centro administrativo e político do município.`,
+img:["images/camara1.jpg"]
+},
+
+{
+nome:"Castelo da Covilhã",
+lat:40.2817,
+lng:-7.5086,
+raio:120,
+texto:`Antiga fortificação medieval que protegia a vila.
+
+🛡️ Hoje restam vestígios históricos importantes.`,
+img:["images/castelo1.jpg"]
+},
+
+{
+nome:"Parque do Pião",
+lat:40.2872,
+lng:-7.5271,
+raio:200,
+texto:`Zona verde de lazer muito apreciada pelos habitantes.
+
+🌳 Ideal para pequenas paragens e contacto com a natureza.`,
+img:["images/piao1.jpg"]
+},
+
+// ===== SERRA =====
+
+{
+nome:"Penhas da Saúde",
+lat:40.3076,
+lng:-7.5486,
+raio:700,
+texto:`Importante estância turística de montanha.
+
+🏔️ Muito procurada no inverno e verão.`,
+img:["images/penhas1.jpg"]
+},
+
+{
+nome:"Edifício Teleférico Piornos",
+lat:40.314362,
+lng:-7.575729,
+raio:700,
+texto:`Zona de acesso histórico às áreas altas da serra.
+
+🚠 Ponto associado às infraestruturas de montanha.`,
+img:["images/teleferico1.jpg"]
+},
+
+{
+nome:"Nossa Senhora da Boa Estrela",
+lat:40.322991,
+lng:-7.602988,
+raio:700,
+texto:`Imagem de Nossa Senhora esculpida na rocha.
+
+🙏 Um dos pontos mais emblemáticos da Serra da Estrela.`,
+img:["images/boaestrela1.jpg"]
+},
+
+{
+nome:"Lagoa do Viriato",
+lat:40.322991,
+lng:-7.602988,
+raio:700,
+texto:`Zona natural de grande beleza paisagística.
+
+🌄 Frequentemente visitada por turistas.`,
+img:["images/viriato1.jpg"]
+},
+
+{
+nome:"Vale do Zêzere",
+lat:40.3280,
+lng:-7.5867,
+raio:700,
+texto:`Impressionante vale glaciar da Serra da Estrela.
+
+🧊 Formado durante a última era do gelo.`,
+img:["images/zezere1.jpg"]
+},
+
+{
+nome:"Miradouro Vale de Loriga",
+lat:40.334209,
+lng:-7.617628,
+raio:700,
+texto:`Miradouro com vista panorâmica sobre o vale glaciar.
+
+📸 Paragem obrigatória para fotografias.`,
+img:["images/loriga1.jpg"]
+},
+
+{
+nome:"Estância de Ski",
+lat:40.330836,
+lng:-7.613945,
+raio:700,
+texto:`Principal estância de desportos de inverno em Portugal.
+
+🎿 Muito procurada na época de neve.`,
+img:["images/ski1.jpg"]
+},
+
+{
+nome:"Torre Serra da Estrela",
+lat:40.3219,
+lng:-7.6127,
+raio:700,
+texto:`Ponto mais alto de Portugal continental (1993 m).
+
+📍 Local icónico da Serra da Estrela.`,
+img:["images/torre1.jpg"]
+},
+
+{
+nome:"Cascata Poço do Inferno",
+lat:40.372757,
+lng:-7.516673,
+raio:700,
+texto:`Uma das cascatas naturais mais bonitas da região.
+
+💧 Muito visitada por amantes da natureza.`,
+img:["images/pocoinferno1.jpg"]
+}
 
 ];
-
 pontos.forEach(p=>{
 L.marker([p.lat,p.lng]).addTo(map).bindPopup(p.nome);
 });
@@ -167,5 +345,6 @@ return R*c;
 
 </body>
 </html>
+
 
 

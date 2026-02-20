@@ -5,9 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tour Interativo Covilhã e Serra</title>
 
+<link rel="icon" href="images/logo-euro-tours.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 <style>
+.topbar{
+background:white;
+padding:10px;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+
+.logo{
+height:60px;
+max-width:90%;
+}
+
 body{margin:0;font-family:Arial;background:#f4f4f4;text-align:center;}
 #map{height:40vh;width:100%;}
 button{padding:14px 26px;margin:8px;font-size:16px;cursor:pointer;border-radius:8px;border:none;}
@@ -24,13 +36,18 @@ position:absolute;top:50%;transform:translateY(-50%);
 background:rgba(0,0,0,.5);color:white;border:none;
 padding:8px 12px;font-size:18px;z-index:5;
 }
-.prev{left:5px;} .next{right:5px;}
+.prev{left:5px;}
+.next{right:5px;}
 </style>
 </head>
 
 <body>
 
 <h2>Tour Interativo Covilhã e Serra</h2>
+
+<div class="topbar">
+  <img src="images/logo-euro-tours.png" class="logo">
+</div>
 
 <button class="btn-start" onclick="iniciar()">INICIAR TOUR</button>
 <button class="btn-stop" onclick="parar()">PARAR TOUR</button>
@@ -50,6 +67,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 maxZoom:19
 }).addTo(map);
 
+// ===== ÍCONE EURO TOURS (CRIADO UMA VEZ) =====
+const userIcon = L.icon({
+  iconUrl: 'images/logo-euro-tours.png',
+  iconSize: [40,40],
+  iconAnchor: [20,40]
+});
+
+// ================= ESTADO =================
 let marcadorUsuario=null;
 let ultimoPonto=null;
 let pontoAtivoObj=null;
@@ -58,7 +83,7 @@ let audioAtual=null;
 
 const HISTERESIS=25;
 
-// ================= PONTOS (exemplo) =================
+// ================= PONTOS =================
 const pontos=[
 
 {
@@ -82,7 +107,11 @@ audio:"audio/shopping.mp3"
 // ===== markers =====
 pontos.forEach(p=>{
 L.marker([p.lat,p.lng]).addTo(map).bindPopup(p.nome);
-L.circle([p.lat,p.lng],{radius:p.raio,color:"#0077ff",fillOpacity:0.08}).addTo(map);
+L.circle([p.lat,p.lng],{
+radius:p.raio,
+color:"#0077ff",
+fillOpacity:0.08
+}).addTo(map);
 });
 
 // ================= CONTROLO TOUR =================
@@ -117,9 +146,12 @@ let lat=pos.coords.latitude;
 let lng=pos.coords.longitude;
 let precisao=pos.coords.accuracy;
 
+// marcador utilizador
 if(!marcadorUsuario){
-marcadorUsuario=L.marker([lat,lng]).addTo(map);
-}else marcadorUsuario.setLatLng([lat,lng]);
+  marcadorUsuario=L.marker([lat,lng],{icon:userIcon}).addTo(map);
+}else{
+  marcadorUsuario.setLatLng([lat,lng]);
+}
 
 map.panTo([lat,lng]);
 
@@ -129,7 +161,8 @@ let menorDist=Infinity;
 pontos.forEach(p=>{
 let d=dist(lat,lng,p.lat,p.lng);
 if(d<p.raio && d<menorDist){
-maisProximo=p; menorDist=d;
+maisProximo=p;
+menorDist=d;
 }
 });
 
@@ -161,9 +194,7 @@ function tocarAudio(ponto){
 
 if(!ponto.audio) return;
 
-if(audioAtual){
-audioAtual.pause();
-}
+if(audioAtual) audioAtual.pause();
 
 audioAtual=new Audio(ponto.audio);
 audioAtual.preload="auto";
@@ -210,11 +241,15 @@ const carIndex={};
 function mover(id,dir){
 const el=document.getElementById(id);
 if(!el) return;
+
 const total=el.children.length;
 if(!(id in carIndex)) carIndex[id]=0;
+
 carIndex[id]+=dir;
+
 if(carIndex[id]<0) carIndex[id]=total-1;
 if(carIndex[id]>=total) carIndex[id]=0;
+
 el.style.transform=`translateX(-${carIndex[id]*100}%)`;
 }
 

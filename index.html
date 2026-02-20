@@ -84,7 +84,10 @@ let audioAtual=null;
 const HISTERESIS=25;
 
 // ================= PONTOS =================
-const pontos=[
+
+  const pontos=[
+
+// ===== COVILHÃ =====
 
 {
 nome:"Central de Camionagem",
@@ -166,6 +169,18 @@ img:["images/piao1.jpg"],
 audio:"audio/piao.mp3"
 },
 
+// ⭐ NOVO — SANATÓRIO (logo após Parque do Pião)
+
+{
+nome:"Sanatório dos Ferroviários",
+lat:40.2956,lng:-7.5365,raio:250,
+texto:`Antigo sanatório construído para tratamento de doenças respiratórias na montanha.`,
+img:["images/sanatorio.jpg"],
+audio:"audio/sanatorio.mp3"
+},
+
+// ===== SUBIDA SERRA =====
+
 {
 nome:"Penhas da Saúde",
 lat:40.3076,lng:-7.5486,raio:700,
@@ -182,20 +197,32 @@ img:["images/teleferico1.jpg"],
 audio:"audio/teleferico.mp3"
 },
 
+// ⭐ NOVO — NAVE DE SANTO ANTÓNIO
+
+{
+nome:"Nave de Santo António",
+lat:40.3336,lng:-7.5666,raio:700,
+texto:`Planalto de grande altitude muito usado no inverno para atividades na neve.`,
+img:["images/nave-santo-antonio.jpg"],
+audio:"audio/nave.mp3"
+},
+
+// ⭐ NOVO — COVÃO D'AMETADE
+
+{
+nome:"Covão d'Ametade",
+lat:40.3544,lng:-7.5827,raio:700,
+texto:`Um dos vales glaciares mais bonitos da Serra da Estrela.`,
+img:["images/covao-ametade.jpg"],
+audio:"audio/covao.mp3"
+},
+
 {
 nome:"Nossa Senhora da Boa Estrela",
 lat:40.322991,lng:-7.602988,raio:700,
 texto:`Imagem esculpida na rocha.`,
 img:["images/boaestrela1.jpg"],
 audio:"audio/boaestrela.mp3"
-},
-
-{
-nome:"Lagoa do Viriato",
-lat:40.322991,lng:-7.602988,raio:700,
-texto:`Zona natural de grande beleza.`,
-img:["images/viriato1.jpg"],
-audio:"audio/viriato.mp3"
 },
 
 {
@@ -240,6 +267,7 @@ audio:"audio/pocoinferno.mp3"
 
 ];
 
+  
 // ===== markers =====
 pontos.forEach(p=>{
 L.marker([p.lat,p.lng]).addTo(map).bindPopup(p.nome);
@@ -407,4 +435,5 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 </script>
 </body>
 </html>
+
 

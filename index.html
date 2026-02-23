@@ -59,7 +59,7 @@ padding:8px 12px;font-size:18px;z-index:5;
 
 <h2>Tour Interativo Serra da Estrela</h2>
 
-<button class="btn-start" onclick="iniciar()">INICIAR TOUR</button>
+<button class="btn-start" onclick="if(validarSenha()) iniciar()">INICIAR TOUR</button>
 <button class="btn-stop" onclick="parar()">PARAR TOUR</button>
 
 <div id="info"></div>
@@ -95,6 +95,41 @@ let linhaRota=L.polyline([], {color:'#1976d2',weight:4}).addTo(map);
 
 const HISTERESIS=25;
 
+// ===== SENHA AUTOMÁTICA POR DATA =====
+let acessoLiberado = false;
+
+function gerarSenhaHoje(){
+
+let hoje = new Date();
+
+// Formato YYYYMMDD
+let ano = hoje.getFullYear();
+let mes = String(hoje.getMonth()+1).padStart(2,'0');
+let dia = String(hoje.getDate()).padStart(2,'0');
+
+return "EURO-" + ano + mes + dia;
+}
+
+function validarSenha(){
+
+if(acessoLiberado) return true;
+
+let senhaDigitada = prompt("Insira a senha fornecida pela EURO TOURS:");
+
+let senhaCorreta = gerarSenhaHoje();
+
+if(senhaDigitada === senhaCorreta){
+acessoLiberado = true;
+alert("Acesso autorizado. Bom tour!");
+return true;
+}else{
+alert("Senha incorreta.");
+return false;
+}
+
+}
+
+  
 // ================= PONTOS =================
 const pontos=[
 
@@ -318,7 +353,24 @@ return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
 function erro(){
 document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
+  function validarSenha(){
+
+if(acessoLiberado) return true;
+
+let senha = prompt("Insira a senha fornecida pela EURO TOURS:");
+
+if(senha === SENHA_DO_DIA){
+acessoLiberado = true;
+alert("Acesso autorizado. Bom tour!");
+return true;
+}else{
+alert("Senha incorreta.");
+return false;
+}
+
+}
 
 </script>
 </body>
 </html>
+

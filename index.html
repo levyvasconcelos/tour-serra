@@ -214,16 +214,60 @@ if(audioAtual) audioAtual.pause();
 
 // ================= RESTANTE LÓGICA (mantida igual) =================
 function atualizar(pos){
-let lat=pos.coords.latitude;
-let lng=pos.coords.longitude;
+function atualizar(pos){
+
+let lat = pos.coords.latitude;
+let lng = pos.coords.longitude;
+let precisao = pos.coords.accuracy;
 
 if(!marcadorUsuario){
-marcadorUsuario=L.marker([lat,lng],{icon:userIcon}).addTo(map);
+marcadorUsuario = L.marker([lat,lng],{icon:userIcon}).addTo(map);
 }else{
 marcadorUsuario.setLatLng([lat,lng]);
 }
 
 linhaRota.addLatLng([lat,lng]);
+
+let maisProximo = null;
+let menorDist = Infinity;
+
+pontos.forEach(p=>{
+let d = dist(lat,lng,p.lat,p.lng);
+if(d < p.raio && d < menorDist){
+maisProximo = p;
+menorDist = d;
+}
+});
+
+// Histerese anti piscar
+if(pontoAtivoObj){
+let dAtual = dist(lat,lng,pontoAtivoObj.lat,pontoAtivoObj.lng);
+if(dAtual <= pontoAtivoObj.raio + HISTERESIS){
+maisProximo = pontoAtivoObj;
+}
+}
+
+if(maisProximo && maisProximo.nome !== ultimoPonto){
+
+ultimoPonto = maisProximo.nome;
+pontoAtivoObj = maisProximo;
+
+pontosVisitados.add(maisProximo.nome);
+
+map.flyTo([maisProximo.lat,maisProximo.lng],15);
+
+mostrarInfo(maisProximo);
+tocarAudio(maisProximo);
+vibrar();
+}
+
+document.getElementById("debug").innerHTML =
+"Lat: "+lat+"<br>"+
+"Lng: "+lng+"<br>"+
+"Precisão: "+Math.round(precisao)+"m<br>"+
+"Ponto ativo: "+(ultimoPonto || "Nenhum")+"<br>"+
+"Pontos visitados: "+pontosVisitados.size+" / "+pontos.length;
+
 }
 
 function erro(){
@@ -233,3 +277,4 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 </script>
 </body>
 </html>
+

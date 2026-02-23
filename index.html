@@ -99,18 +99,16 @@ const HISTERESIS=25;
 let acessoLiberado = false;
 
 function gerarSenhaHoje()
-console.log("Data do navegador:", new Date());
-console.log("Senha gerada:", gerarSenhaHoje());
-{
-console.log("Senha de hoje:", gerarSenhaHoje());
+function gerarSenhaHoje(){
+
 let hoje = new Date();
 
-// Formato YYYYMMDD
 let ano = hoje.getFullYear();
 let mes = String(hoje.getMonth()+1).padStart(2,'0');
 let dia = String(hoje.getDate()).padStart(2,'0');
 
 return "EURO-" + ano + mes + dia;
+
 }
 
 function validarSenha(){
@@ -482,6 +480,7 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 </script>
 </body>
 </html>
+
 
 
 

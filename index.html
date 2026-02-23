@@ -475,25 +475,10 @@ return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
 function erro(){
 document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
-  function validarSenha(){
-
-if(acessoLiberado) return true;
-
-let senha = prompt("Insira a senha fornecida pela EURO TOURS:");
-
-if(senha === SENHA_DO_DIA){
-acessoLiberado = true;
-alert("Acesso autorizado. Bom tour!");
-return true;
-}else{
-alert("Senha incorreta.");
-return false;
-}
-
-}
-
+ 
 </script>
 </body>
 </html>
+
 
 

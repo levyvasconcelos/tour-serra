@@ -98,7 +98,10 @@ const HISTERESIS=25;
 // ===== SENHA AUTOMÁTICA POR DATA =====
 let acessoLiberado = false;
 
-function gerarSenhaHoje(){
+function gerarSenhaHoje()
+console.log("Data do navegador:", new Date());
+console.log("Senha gerada:", gerarSenhaHoje());
+{
 console.log("Senha de hoje:", gerarSenhaHoje());
 let hoje = new Date();
 
@@ -479,6 +482,7 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 </script>
 </body>
 </html>
+
 
 
 

@@ -430,13 +430,14 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 
 // ===== REGISTAR SERVICE WORKER (PWA) =====
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
+  navigator.serviceWorker.register('./service-worker.js')
   .then(() => console.log("Service Worker registado com sucesso"))
   .catch(err => console.log("Erro ao registar SW:", err));  
   
 </script>
 </body>
 </html>
+
 
 
 

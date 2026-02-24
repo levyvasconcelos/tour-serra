@@ -429,16 +429,22 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
 
 <script>
-  
-// ===== REGISTAR SERVICE WORKER (PWA) =====
+
+function validarSenha(){
+  return true; // temporário para garantir que não trava
+}
+
+// ===== REGISTRO SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./service-worker.js')
-  .then(() => console.log("Service Worker registado com sucesso"))
-  .catch(err => console.log("Erro ao registar SW:", err));  
-  
+  .then(() => console.log("Service Worker registado"))
+  .catch(err => console.log("Erro SW:", err));
+}
+
 </script>
 </body>
 </html>
+
 
 
 

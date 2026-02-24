@@ -429,10 +429,6 @@ document.getElementById("debug").innerHTML="Erro ao obter GPS";
 }
 
 
-function validarSenha(){
-  return true; // temporário para garantir que não trava
-}
-
 // ===== REGISTRO SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./service-worker.js')
@@ -443,6 +439,7 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
+
 
 
 

@@ -1,21 +1,27 @@
 {
-  "name": "EURO TOURS – Serra da Estrela",
-  "short_name": "EURO TOURS",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1976d2",
-  "orientation": "portrait",
+  "name": "EURO TOURS — Serra da Estrela",
+  "short_name": "Euro Tours",
+  "description": "Tour interativo GPS pela Serra da Estrela",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "portrait-primary",
+  "theme_color": "#1a3a2a",
+  "background_color": "#f5f5f0",
+  "lang": "pt-PT",
   "icons": [
     {
       "src": "images/logo-euro-tours.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "images/logo-euro-tours.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["travel", "navigation", "tourism"],
+  "screenshots": []
 }

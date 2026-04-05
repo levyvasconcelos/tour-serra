@@ -62,12 +62,16 @@ body{font-family:var(--font-corpo);background:var(--cinza-bg);color:var(--texto-
 .btn-audio:active{transform:scale(.93)}
 .btn-audio.tocando{background:var(--dourado);color:var(--verde-escuro)}
 /* MAPA */
-#map{height:42vh;min-height:220px;width:100%;border-top:3px solid var(--verde-escuro);border-bottom:3px solid var(--verde-escuro)}
+
 /* INFO */
-#info{background:var(--branco);margin:16px 16px 8px;border-radius:var(--radius);padding:20px;box-shadow:var(--sombra);border-left:4px solid var(--verde-medio);min-height:60px;transition:border-color .4s}
-#info h2{font-family:var(--font-titulo);font-size:22px;color:var(--verde-escuro);margin-bottom:10px}
-#info p{font-size:16px;line-height:1.65;color:var(--texto-primario)}
-.info-vazio{color:var(--texto-secundario);font-style:italic;font-size:15px;text-align:center;padding:10px 0}
+#info{background:var(--branco);margin:12px 16px 0;border-radius:var(--radius) var(--radius) 0 0;padding:18px 20px 14px;box-shadow:0 -2px 0 0 var(--verde-medio) inset,var(--sombra);border-top:4px solid var(--verde-medio);min-height:56px;transition:border-color .4s}
+#info h2{font-family:var(--font-titulo);font-size:21px;color:var(--verde-escuro);margin-bottom:8px}
+#info p{font-size:15px;line-height:1.65;color:var(--texto-primario)}
+.info-vazio{color:var(--texto-secundario);font-style:italic;font-size:14px;text-align:center;padding:6px 0}
+/* Galeria acima do mapa — altura mais compacta */
+#info .galeria{aspect-ratio:16/7;margin-top:12px}
+/* Mapa sem arredondamento em cima quando tem info colada */
+#map{height:40vh;min-height:200px;width:100%;border-top:none;border-bottom:3px solid var(--verde-escuro)}
 /* CARROSSEL */
 .galeria{position:relative;overflow:hidden;border-radius:var(--radius-sm);margin-top:14px;background:#000;aspect-ratio:16/9}
 .carousel{display:flex;transition:transform .4s ease;height:100%}
@@ -206,11 +210,11 @@ body{font-family:var(--font-corpo);background:var(--cinza-bg);color:var(--texto-
     <span id="status-gps-texto" data-i18n="gps_aguardar">A aguardar GPS...</span>
   </div>
 
-  <div id="map" role="application" aria-label="Mapa interativo do tour Serra da Estrela" tabindex="0"></div>
-
   <section id="info" aria-live="polite" aria-atomic="true" aria-label="Informação do ponto atual">
     <p class="info-vazio" data-i18n="info_vazio">Inicie o tour e aproxime-se de um ponto para ver a informação.</p>
   </section>
+
+  <div id="map" role="application" aria-label="Mapa interativo do tour Serra da Estrela" tabindex="0"></div>
 
   <div id="debug" role="log" aria-label="Informação de diagnóstico"></div>
 
@@ -413,7 +417,7 @@ function mostrarInfo(p){
   if(navigator.share)html+=`<button class="btn-partilhar" onclick="partilharPonto('${p.nome.replace(/'/g,"\\'")}')">
     ${t('btn_partilhar')}</button>`;
   document.getElementById('info').innerHTML=html;
-  document.getElementById('info').scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('info').scrollIntoView({behavior:'smooth',block:'start'});
 }
 const carIndex={};
 function mover(id,dir){const el=document.getElementById(id);if(!el)return;const total=el.children.length;if(!(id in carIndex))carIndex[id]=0;carIndex[id]=(carIndex[id]+dir+total)%total;el.style.transform=`translateX(-${carIndex[id]*100}%)`;const cnt=el.parentElement.querySelector('.car-counter');if(cnt)cnt.textContent=`${carIndex[id]+1} / ${total}`}

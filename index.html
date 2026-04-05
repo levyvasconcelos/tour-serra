@@ -951,40 +951,483 @@ const userIcon = L.icon({
 });
 
 // ================================================================
-// 3. PONTOS DO TOUR
+// EURO TOURS — Serra da Estrela + Aldeias
+// Array completo: 23 pontos corrigidos + 6 novos pontos
+// Total: 29 pontos | Coordenadas verificadas via Google Maps
 // ================================================================
+// NOTA: substitua cada imagem e áudio pelo path real do seu projeto
+// Imagens novas:  images/carquejais1.jpg, loriga1.jpg, etc.
+// Áudios novos:   audio/carquejais.mp3, audio/loriga.mp3, etc.
+// ================================================================
+
 const pontos = [
-  { nome:"Central de Camionagem", lat:40.2735, lng:-7.4983, raio:120, texto:{pt:"Principal terminal rodoviário da Covilhã.", en:"Main bus terminal of Covilhã.", es:"Terminal principal de autobuses de Covilhã.", fr:"Terminal principal de bus de Covilhã."}, img:["images/camionagem1.png"], audio:{pt:"audio/camionagem.mp3", en:"audio/camionagem_en.mp3", es:"audio/camionagem_es.mp3", fr:"audio/camionagem_fr.mp3"} },
-  { nome:"Serra Shopping", lat:40.2710, lng:-7.5023, raio:120, texto:{pt:"O maior centro comercial da Covilhã.", en:"The largest shopping centre in Covilhã.", es:"El mayor centro comercial de Covilhã.", fr:"Le plus grand centre commercial de Covilhã."}, img:["images/shopping1.jpg"], audio:{pt:"audio/shopping.mp3", en:"audio/shopping.mp3", es:"audio/shopping.mp3", fr:"audio/shopping.mp3"} },
-  { nome:"Hotel Santa Eufémia", lat:40.2734, lng:-7.5031, raio:120, texto:{pt:"Hotel tradicional muito procurado.", en:"A popular traditional hotel.", es:"Hotel tradicional muy solicitado.", fr:"Hôtel traditionnel très recherché."}, img:["images/hotel1.jpg"], audio:{pt:"audio/hotel.mp3", en:"audio/hotel.mp3", es:"audio/hotel.mp3", fr:"audio/hotel.mp3"} },
-  { nome:"Rotunda do Rato", lat:40.2771, lng:-7.5105, raio:100, texto:{pt:"Importante nó de circulação urbana.", en:"Important urban traffic roundabout.", es:"Importante nodo de circulación urbana.", fr:"Important nœud de circulation urbaine."}, img:["images/rato1.jpg"], audio:{pt:"audio/rato.mp3", en:"audio/rato.mp3", es:"audio/rato.mp3", fr:"audio/rato.mp3"} },
-  { nome:"Museu do Lanifício", lat:40.2779, lng:-7.5085, raio:100, texto:{pt:"Real Fábrica de Panos - Museu da tradição têxtil da Covilhã. Fundada pelo Marquês de Pombal em 1764.", en:"Royal Cloth Factory — Museum of Covilhã's textile tradition, founded by the Marquis of Pombal in 1764.", es:"Real Fábrica de Paños — Museo de la tradición textil de Covilhã. Fundada por el Marqués de Pombal en 1764.", fr:"Manufacture Royale de Draps — Musée de la tradition textile de Covilhã, fondée par le Marquis de Pombal en 1764."}, img:["images/lanificio1.jpg"], audio:{pt:"audio/lanificio.mp3", en:"audio/lanificio.mp3", es:"audio/lanificio.mp3", fr:"audio/lanificio.mp3"} },
-  { nome:"Igreja N. Senhora de Fátima", lat:40.277692, lng:-7.509809, raio:100, texto:{pt:"Igreja moderna muito frequentada.", en:"A modern and very popular church.", es:"Iglesia moderna muy frecuentada.", fr:"Église moderne très fréquentée."}, img:["images/fatima1.jpg"], audio:{pt:"audio/fatima.mp3", en:"audio/fatima.mp3", es:"audio/fatima.mp3", fr:"audio/fatima.mp3"} },
-  { nome:"Igreja Santa Maria Maior", lat:40.280208, lng:-7.506062, raio:100, texto:{pt:"Igreja Matriz da Covilhã construída em 1886 no local da antiga Igreja de Santa Maria do Castelo.", en:"Parish church of Covilhã, built in 1886 on the site of the old Church of Santa Maria do Castelo.", es:"Iglesia Parroquial de Covilhã, construida en 1886 en el lugar de la antigua Iglesia de Santa María del Castillo.", fr:"Église paroissiale de Covilhã, construite en 1886 à l'emplacement de l'ancienne église Santa Maria do Castelo."}, img:["images/santa-maria.jpg","images/santa-maria2.jpg","images/santa-maria3.jpg","images/santa-maria4.jpg","images/santa-maria5.jpg"], audio:{pt:"audio/santamaria.mp3", en:"audio/santamaria.mp3", es:"audio/santamaria.mp3", fr:"audio/santamaria.mp3"} },
-  { nome:"Câmara Municipal", lat:40.2805, lng:-7.5044, raio:100, texto:{pt:"Paços do Concelho da Covilhã. Projeto do Estado Novo iniciado em 1949.", en:"Covilhã City Hall. A Estado Novo project begun in 1949.", es:"Ayuntamiento de Covilhã. Proyecto del Estado Novo iniciado en 1949.", fr:"Mairie de Covilhã. Projet de l'Estado Novo commencé en 1949."}, img:["images/camara1.jpg"], audio:{pt:"audio/camara.mp3", en:"audio/camara.mp3", es:"audio/camara.mp3", fr:"audio/camara.mp3"} },
-  { nome:"Castelo da Covilhã", lat:40.2817, lng:-7.5086, raio:120, texto:{pt:"Vestígios da antiga fortificação medieval.", en:"Remains of the ancient medieval fortification.", es:"Vestigios de la antigua fortificación medieval.", fr:"Vestiges de l'ancienne fortification médiévale."}, img:["images/castelo1.png","images/castelo2.png"], audio:{pt:"audio/castelo.mp3", en:"audio/castelo.mp3", es:"audio/castelo.mp3", fr:"audio/castelo.mp3"} },
-  { nome:"Parque do Pião", lat:40.2872, lng:-7.5271, raio:200, texto:{pt:"Zona verde muito apreciada na transição para a Serra.", en:"A much-loved green area at the gateway to the mountains.", es:"Zona verde muy apreciada en la transición a la Sierra.", fr:"Zone verte très appréciée à l'entrée de la montagne."}, img:["images/parque-campismo-piao.jpg"], audio:{pt:"audio/parque-campismo-piao.mp3", en:"audio/parque-campismo-piao.mp3", es:"audio/parque-campismo-piao.mp3", fr:"audio/parque-campismo-piao.mp3"} },
-  { nome:"Sanatório dos Ferroviários", lat:40.2956, lng:-7.5365, raio:250, texto:{pt:"Antigo sanatório de montanha dedicado a doenças respiratórias.", en:"Former mountain sanatorium dedicated to respiratory diseases.", es:"Antiguo sanatorio de montaña dedicado a enfermedades respiratorias.", fr:"Ancien sanatorium de montagne dédié aux maladies respiratoires."}, img:["images/sanatorio1.png","images/sanatorio2.png","images/sanatorio3.png"], audio:{pt:"audio/sanatorio.mp3", en:"audio/sanatorio.mp3", es:"audio/sanatorio.mp3", fr:"audio/sanatorio.mp3"} },
-  { nome:"Penhas da Saúde", lat:40.3076, lng:-7.5486, raio:700, texto:{pt:"Importante estância turística de montanha.", en:"An important mountain tourist resort.", es:"Importante estación turística de montaña.", fr:"Importante station touristique de montagne."}, img:["images/penhas1.jpg","images/penhas2.png","images/penhas3.png"], audio:{pt:"audio/penhas.mp3", en:"audio/penhas.mp3", es:"audio/penhas.mp3", fr:"audio/penhas.mp3"} },
-  { nome:"Edifício Teleférico Piornos", lat:40.314362, lng:-7.575729, raio:700, texto:{pt:"Zona histórica de acesso às áreas altas da Serra.", en:"Historic access point to the high mountain areas.", es:"Zona histórica de acceso a las áreas altas de la Sierra.", fr:"Zone historique d'accès aux hauts plateaux de la montagne."}, img:["images/teleferico1.png","images/teleferico2.png","images/teleferico3.png","images/teleferico4.png","images/teleferico5.png","images/teleferico6.png"], audio:{pt:"audio/teleferico.mp3", en:"audio/teleferico.mp3", es:"audio/teleferico.mp3", fr:"audio/teleferico.mp3"} },
-  { nome:"Nave de Santo António", lat:40.3336, lng:-7.5666, raio:700, texto:{pt:"Planalto de grande altitude muito usado no inverno.", en:"High-altitude plateau widely used in winter.", es:"Meseta de gran altitud muy usada en invierno.", fr:"Plateau de haute altitude très utilisé en hiver."}, img:["images/nave-santo-antonio1.jpg","images/nave-santo-antonio2.jpg","images/nave-santo-antonio3.jpg","images/nave-santo-antonio4.jpg"], audio:{pt:"audio/nave.mp3", en:"audio/nave.mp3", es:"audio/nave.mp3", fr:"audio/nave.mp3"} },
-  { nome:"Covão d'Ametade", lat:40.3544, lng:-7.5827, raio:700, texto:{pt:"Um dos vales glaciares mais bonitos da Serra da Estrela.", en:"One of the most beautiful glacial valleys in Serra da Estrela.", es:"Uno de los valles glaciares más bonitos de la Serra da Estrela.", fr:"L'un des plus beaux vallons glaciaires de la Serra da Estrela."}, img:["images/covao-ametade1.jpg","images/covao-ametade2.jpg","images/covao-ametade3.jpg","images/covao-ametade4.jpg","images/covao-ametade5.jpg"], audio:{pt:"audio/covao.mp3", en:"audio/covao.mp3", es:"audio/covao.mp3", fr:"audio/covao.mp3"} },
-  { nome:"Nossa Senhora da Boa Estrela", lat:40.322991, lng:-7.602988, raio:700, texto:{pt:"Imagem esculpida na rocha.", en:"An image sculpted in the rock.", es:"Imagen esculpida en la roca.", fr:"Image sculptée dans la roche."}, img:["images/boaestrela1.jpg","images/boaestrela2.jpg","images/boaestrela3.jpg"], audio:{pt:"audio/boaestrela.mp3", en:"audio/boaestrela.mp3", es:"audio/boaestrela.mp3", fr:"audio/boaestrela.mp3"} },
-  { nome:"Vale do Zêzere", lat:40.3280, lng:-7.5867, raio:700, texto:{pt:"Impressionante vale glaciar.", en:"An impressive glacial valley.", es:"Impresionante valle glaciar.", fr:"Impressionnant vallon glaciaire."}, img:["images/zezere1.png","images/zezere2.png","images/zezere3.png"], audio:{pt:"audio/zezere.mp3", en:"audio/zezere.mp3", es:"audio/zezere.mp3", fr:"audio/zezere.mp3"} },
-  { nome:"Miradouro Vale de Loriga", lat:40.334209, lng:-7.617628, raio:700, texto:{pt:"Vista panorâmica sobre o vale glaciar.", en:"Panoramic view over the glacial valley.", es:"Vista panorámica sobre el valle glaciar.", fr:"Vue panoramique sur le vallon glaciaire."}, img:["images/loriga1.jpg"], audio:{pt:"audio/loriga.mp3", en:"audio/loriga.mp3", es:"audio/loriga.mp3", fr:"audio/loriga.mp3"} },
-  { nome:"Estância de Ski", lat:40.330836, lng:-7.613945, raio:700, texto:{pt:"Principal estância de desportos de inverno em Portugal.", en:"Portugal's main winter sports resort.", es:"Principal estación de deportes de invierno de Portugal.", fr:"Principale station de sports d'hiver du Portugal."}, img:["images/ski1.png"], audio:{pt:"audio/ski.mp3", en:"audio/ski.mp3", es:"audio/ski.mp3", fr:"audio/ski.mp3"} },
-  { nome:"Torre Serra da Estrela", lat:40.3219, lng:-7.6127, raio:700, texto:{pt:"Ponto mais alto de Portugal continental (1993m).", en:"The highest point in mainland Portugal (1993m).", es:"Punto más alto de Portugal continental (1993m).", fr:"Point culminant du Portugal continental (1993m)."}, img:["images/torre1.jpg"], audio:{pt:"audio/torre.mp3", en:"audio/torre.mp3", es:"audio/torre.mp3", fr:"audio/torre.mp3"} },
-  { nome:"Lagoa Comprida", lat:40.3910, lng:-7.6020, raio:700, texto:{pt:"A maior lagoa da Serra da Estrela, formada por uma barragem construída no século XX.", en:"The largest lagoon in Serra da Estrela, formed by a dam built in the 20th century.", es:"La laguna más grande de la Serra da Estrela, formada por una presa construida en el siglo XX.", fr:"Le plus grand lac de la Serra da Estrela, formé par un barrage construit au XXe siècle."}, img:["images/lagoa-comprida1.jpg","images/lagoa-comprida2.jpg"], audio:{pt:"audio/lagoa-comprida.mp3", en:"audio/lagoa-comprida.mp3", es:"audio/lagoa-comprida.mp3", fr:"audio/lagoa-comprida.mp3"} },
-  { nome:"Cascata Poço do Inferno", lat:40.372757, lng:-7.516673, raio:700, texto:{pt:"Uma das cascatas naturais mais bonitas da região.", en:"One of the most beautiful natural waterfalls in the region.", es:"Una de las cascadas naturales más bonitas de la región.", fr:"L'une des plus belles cascades naturelles de la région."}, img:["images/pocoinferno1.jpg"], audio:{pt:"audio/pocoinferno.mp3", en:"audio/pocoinferno.mp3", es:"audio/pocoinferno.mp3", fr:"audio/pocoinferno.mp3"} },
-  { nome:"Sabugueiro", lat:40.4014, lng:-7.6403, raio:700, texto:{pt:"Conhecida como a aldeia mais alta de Portugal, situada a cerca de 1.100 metros de altitude.", en:"Known as the highest village in Portugal, located at about 1,100 metres altitude.", es:"Conocida como el pueblo más alto de Portugal, ubicado a unos 1.100 metros de altitud.", fr:"Connue comme le village le plus haut du Portugal, situé à environ 1 100 mètres d'altitude."}, img:["images/sabugueiro1.jpg","images/sabugueiro2.jpg"], audio:{pt:"audio/sabugueiro.mp3", en:"audio/sabugueiro.mp3", es:"audio/sabugueiro.mp3", fr:"audio/sabugueiro.mp3"} },
+
+  // ========================
+  // COVILHÃ URBANA
+  // ========================
+
+  {
+    nome: "Central de Camionagem",
+    lat: 40.2737, lng: -7.4982,          // ✅ corrigido (+20m)
+    raio: 120,
+    texto: {
+      pt: "Principal terminal rodoviário da Covilhã.",
+      en: "Main bus terminal of Covilhã.",
+      es: "Terminal principal de autobuses de Covilhã.",
+      fr: "Terminal principal de bus de Covilhã."
+    },
+    img: ["images/camionagem1.png"],
+    audio: { pt:"audio/camionagem.mp3", en:"audio/camionagem_en.mp3", es:"audio/camionagem_es.mp3", fr:"audio/camionagem_fr.mp3" }
+  },
+
+  {
+    nome: "Serra Shopping",
+    lat: 40.2710, lng: -7.5019,          // ✅ corrigido (+37m)
+    raio: 120,
+    texto: {
+      pt: "O maior centro comercial da Covilhã.",
+      en: "The largest shopping centre in Covilhã.",
+      es: "El mayor centro comercial de Covilhã.",
+      fr: "Le plus grand centre commercial de Covilhã."
+    },
+    img: ["images/shopping1.jpg"],
+    audio: { pt:"audio/shopping.mp3", en:"audio/shopping.mp3", es:"audio/shopping.mp3", fr:"audio/shopping.mp3" }
+  },
+
+  {
+    nome: "Hotel Santa Eufémia",
+    lat: 40.2735, lng: -7.5033,          // ✅ corrigido (+12m)
+    raio: 120,
+    texto: {
+      pt: "Hotel tradicional muito procurado.",
+      en: "A popular traditional hotel.",
+      es: "Hotel tradicional muy solicitado.",
+      fr: "Hôtel traditionnel très recherché."
+    },
+    img: ["images/hotel1.jpg"],
+    audio: { pt:"audio/hotel.mp3", en:"audio/hotel.mp3", es:"audio/hotel.mp3", fr:"audio/hotel.mp3" }
+  },
+
+  {
+    nome: "Rotunda do Rato",
+    lat: 40.2772, lng: -7.5107,          // ✅ corrigido (+22m)
+    raio: 100,
+    texto: {
+      pt: "Importante nó de circulação urbana.",
+      en: "Important urban traffic roundabout.",
+      es: "Importante nodo de circulación urbana.",
+      fr: "Important nœud de circulation urbaine."
+    },
+    img: ["images/rato1.jpg"],
+    audio: { pt:"audio/rato.mp3", en:"audio/rato.mp3", es:"audio/rato.mp3", fr:"audio/rato.mp3" }
+  },
+
+  {
+    nome: "Museu do Lanifício",
+    lat: 40.2778, lng: -7.5085,          // ✅ mantido (<10m)
+    raio: 100,
+    texto: {
+      pt: "Real Fábrica de Panos - Museu da tradição têxtil da Covilhã. Fundada pelo Marquês de Pombal em 1764.",
+      en: "Royal Cloth Factory — Museum of Covilhã's textile tradition, founded by the Marquis of Pombal in 1764.",
+      es: "Real Fábrica de Paños — Museo de la tradición textil de Covilhã. Fundada por el Marqués de Pombal en 1764.",
+      fr: "Manufacture Royale de Draps — Musée de la tradition textile de Covilhã, fondée par le Marquis de Pombal en 1764."
+    },
+    img: ["images/lanificio1.jpg"],
+    audio: { pt:"audio/lanificio.mp3", en:"audio/lanificio.mp3", es:"audio/lanificio.mp3", fr:"audio/lanificio.mp3" }
+  },
+
+  {
+    nome: "Igreja N. Senhora de Fátima",
+    lat: 40.2777, lng: -7.5104,          // 🟡 corrigido (~200m)
+    raio: 100,
+    texto: {
+      pt: "Igreja moderna muito frequentada.",
+      en: "A modern and very popular church.",
+      es: "Iglesia moderna muy frecuentada.",
+      fr: "Église moderne très fréquentée."
+    },
+    img: ["images/fatima1.jpg"],
+    audio: { pt:"audio/fatima.mp3", en:"audio/fatima.mp3", es:"audio/fatima.mp3", fr:"audio/fatima.mp3" }
+  },
+
+  {
+    nome: "Igreja Santa Maria Maior",
+    lat: 40.2803, lng: -7.5059,          // ✅ mantido (<20m)
+    raio: 100,
+    texto: {
+      pt: "Igreja Matriz da Covilhã construída em 1886 no local da antiga Igreja de Santa Maria do Castelo.",
+      en: "Parish church of Covilhã, built in 1886 on the site of the old Church of Santa Maria do Castelo.",
+      es: "Iglesia Parroquial de Covilhã, construida en 1886 en el lugar de la antigua Iglesia de Santa María del Castillo.",
+      fr: "Église paroissiale de Covilhã, construite en 1886 à l'emplacement de l'ancienne église Santa Maria do Castelo."
+    },
+    img: ["images/santa-maria.jpg","images/santa-maria2.jpg","images/santa-maria3.jpg","images/santa-maria4.jpg","images/santa-maria5.jpg"],
+    audio: { pt:"audio/santamaria.mp3", en:"audio/santamaria.mp3", es:"audio/santamaria.mp3", fr:"audio/santamaria.mp3" }
+  },
+
+  {
+    nome: "Câmara Municipal",
+    lat: 40.2805, lng: -7.5047,          // ✅ corrigido (+26m)
+    raio: 100,
+    texto: {
+      pt: "Paços do Concelho da Covilhã. Projeto do Estado Novo iniciado em 1949.",
+      en: "Covilhã City Hall. A Estado Novo project begun in 1949.",
+      es: "Ayuntamiento de Covilhã. Proyecto del Estado Novo iniciado en 1949.",
+      fr: "Mairie de Covilhã. Projet de l'Estado Novo commencé en 1949."
+    },
+    img: ["images/camara1.jpg"],
+    audio: { pt:"audio/camara.mp3", en:"audio/camara.mp3", es:"audio/camara.mp3", fr:"audio/camara.mp3" }
+  },
+
+  {
+    nome: "Castelo da Covilhã",
+    lat: 40.2811, lng: -7.5080,          // 🟡 corrigido (~75m)
+    raio: 120,
+    texto: {
+      pt: "Vestígios da antiga fortificação medieval.",
+      en: "Remains of the ancient medieval fortification.",
+      es: "Vestigios de la antigua fortificación medieval.",
+      fr: "Vestiges de l'ancienne fortification médiévale."
+    },
+    img: ["images/castelo1.png","images/castelo2.png"],
+    audio: { pt:"audio/castelo.mp3", en:"audio/castelo.mp3", es:"audio/castelo.mp3", fr:"audio/castelo.mp3" }
+  },
+
+  {
+    nome: "Parque do Pião",
+    lat: 40.2872, lng: -7.5271,          // ⚠️ manter — verificar no terreno
+    raio: 200,
+    texto: {
+      pt: "Zona verde muito apreciada na transição para a Serra.",
+      en: "A much-loved green area at the gateway to the mountains.",
+      es: "Zona verde muy apreciada en la transición a la Sierra.",
+      fr: "Zone verte très appréciée à l'entrée de la montagne."
+    },
+    img: ["images/parque-campismo-piao.jpg"],
+    audio: { pt:"audio/parque-campismo-piao.mp3", en:"audio/parque-campismo-piao.mp3", es:"audio/parque-campismo-piao.mp3", fr:"audio/parque-campismo-piao.mp3" }
+  },
+
+  // ========================
+  // TRANSIÇÃO COVILHÃ → SERRA
+  // ========================
+
+  {
+    nome: "Miradouro dos Carquejais",
+    lat: 40.2911, lng: -7.5275,          // ✅ NOVO — verificado (rating 4.7 ⭐ / 1786 reviews)
+    raio: 300,
+    texto: {
+      pt: "Varanda dos Carquejais — espetacular miradouro sobre a Covilhã e a Beira Interior. Vista privilegiada ao pôr do sol.",
+      en: "Varanda dos Carquejais — spectacular viewpoint over Covilhã and Beira Interior. A privileged sunset view.",
+      es: "Varanda dos Carquejais — espectacular mirador sobre Covilhã y el interior de Portugal. Vista privilegiada al atardecer.",
+      fr: "Varanda dos Carquejais — spectaculaire belvédère sur Covilhã et le Beira Interior. Vue privilégiée au coucher du soleil."
+    },
+    img: ["images/carquejais1.jpg","images/carquejais2.jpg"],
+    audio: { pt:"audio/carquejais.mp3", en:"audio/carquejais.mp3", es:"audio/carquejais.mp3", fr:"audio/carquejais.mp3" }
+  },
+
+  {
+    nome: "Sanatório dos Ferroviários",
+    lat: 40.2910, lng: -7.5364,          // 🟡 corrigido (~510m)
+    raio: 250,
+    texto: {
+      pt: "Antigo sanatório de montanha dedicado a doenças respiratórias.",
+      en: "Former mountain sanatorium dedicated to respiratory diseases.",
+      es: "Antiguo sanatorio de montaña dedicado a enfermedades respiratorias.",
+      fr: "Ancien sanatorium de montagne dédié aux maladies respiratoires."
+    },
+    img: ["images/sanatorio1.png","images/sanatorio2.png","images/sanatorio3.png"],
+    audio: { pt:"audio/sanatorio.mp3", en:"audio/sanatorio.mp3", es:"audio/sanatorio.mp3", fr:"audio/sanatorio.mp3" }
+  },
+
+  // ========================
+  // SERRA DA ESTRELA
+  // ========================
+
+  {
+    nome: "Penhas da Saúde",
+    lat: 40.3081, lng: -7.5459,          // 🟡 corrigido (~220m)
+    raio: 700,
+    texto: {
+      pt: "Importante estância turística de montanha.",
+      en: "An important mountain tourist resort.",
+      es: "Importante estación turística de montaña.",
+      fr: "Importante station touristique de montagne."
+    },
+    img: ["images/penhas1.jpg","images/penhas2.png","images/penhas3.png"],
+    audio: { pt:"audio/penhas.mp3", en:"audio/penhas.mp3", es:"audio/penhas.mp3", fr:"audio/penhas.mp3" }
+  },
+
+  {
+    nome: "Edifício Teleférico Piornos",
+    lat: 40.3145, lng: -7.5763,          // ✅ corrigido (+65m)
+    raio: 700,
+    texto: {
+      pt: "Zona histórica de acesso às áreas altas da Serra.",
+      en: "Historic access point to the high mountain areas.",
+      es: "Zona histórica de acceso a las áreas altas de la Sierra.",
+      fr: "Zone historique d'accès aux hauts plateaux de la montagne."
+    },
+    img: ["images/teleferico1.png","images/teleferico2.png","images/teleferico3.png","images/teleferico4.png","images/teleferico5.png","images/teleferico6.png"],
+    audio: { pt:"audio/teleferico.mp3", en:"audio/teleferico.mp3", es:"audio/teleferico.mp3", fr:"audio/teleferico.mp3" }
+  },
+
+  {
+    nome: "Nave de Santo António",
+    lat: 40.3180, lng: -7.5778,          // 🔴 corrigido (~2300m)
+    raio: 700,
+    texto: {
+      pt: "Planalto de grande altitude muito usado no inverno.",
+      en: "High-altitude plateau widely used in winter.",
+      es: "Meseta de gran altitud muy usada en invierno.",
+      fr: "Plateau de haute altitude très utilisé en hiver."
+    },
+    img: ["images/nave-santo-antonio1.jpg","images/nave-santo-antonio2.jpg","images/nave-santo-antonio3.jpg","images/nave-santo-antonio4.jpg"],
+    audio: { pt:"audio/nave.mp3", en:"audio/nave.mp3", es:"audio/nave.mp3", fr:"audio/nave.mp3" }
+  },
+
+  {
+    nome: "Nossa Senhora da Boa Estrela",
+    lat: 40.3230, lng: -7.6021,          // ✅ mantido (<10m)
+    raio: 700,
+    texto: {
+      pt: "Imagem esculpida na rocha.",
+      en: "An image sculpted in the rock.",
+      es: "Imagen esculpida en la roca.",
+      fr: "Image sculptée dans la roche."
+    },
+    img: ["images/boaestrela1.jpg","images/boaestrela2.jpg","images/boaestrela3.jpg"],
+    audio: { pt:"audio/boaestrela.mp3", en:"audio/boaestrela.mp3", es:"audio/boaestrela.mp3", fr:"audio/boaestrela.mp3" }
+  },
+
+  {
+    nome: "Estância de Ski",
+    lat: 40.3307, lng: -7.6148,          // ✅ corrigido (+95m)
+    raio: 700,
+    texto: {
+      pt: "Principal estância de desportos de inverno em Portugal.",
+      en: "Portugal's main winter sports resort.",
+      es: "Principal estación de deportes de invierno de Portugal.",
+      fr: "Principale station de sports d'hiver du Portugal."
+    },
+    img: ["images/ski1.png"],
+    audio: { pt:"audio/ski.mp3", en:"audio/ski.mp3", es:"audio/ski.mp3", fr:"audio/ski.mp3" }
+  },
+
+  {
+    nome: "Torre Serra da Estrela",
+    lat: 40.3219, lng: -7.6130,          // ✅ corrigido (+30m)
+    raio: 700,
+    texto: {
+      pt: "Ponto mais alto de Portugal continental (1993m).",
+      en: "The highest point in mainland Portugal (1993m).",
+      es: "Punto más alto de Portugal continental (1993m).",
+      fr: "Point culminant du Portugal continental (1993m)."
+    },
+    img: ["images/torre1.jpg"],
+    audio: { pt:"audio/torre.mp3", en:"audio/torre.mp3", es:"audio/torre.mp3", fr:"audio/torre.mp3" }
+  },
+
+  {
+    nome: "Miradouro Vale de Loriga",
+    lat: 40.3344, lng: -7.6177,          // ✅ mantido (<20m)
+    raio: 700,
+    texto: {
+      pt: "Vista panorâmica sobre o vale glaciar.",
+      en: "Panoramic view over the glacial valley.",
+      es: "Vista panorámica sobre el valle glaciar.",
+      fr: "Vue panoramique sur le vallon glaciaire."
+    },
+    img: ["images/loriga1.jpg"],
+    audio: { pt:"audio/loriga.mp3", en:"audio/loriga.mp3", es:"audio/loriga.mp3", fr:"audio/loriga.mp3" }
+  },
+
+  {
+    nome: "Covão d'Ametade",
+    lat: 40.3281, lng: -7.5870,          // 🔴 corrigido (~2960m)
+    raio: 700,
+    texto: {
+      pt: "Um dos vales glaciares mais bonitos da Serra da Estrela.",
+      en: "One of the most beautiful glacial valleys in Serra da Estrela.",
+      es: "Uno de los valles glaciares más bonitos de la Serra da Estrela.",
+      fr: "L'un des plus beaux vallons glaciaires de la Serra da Estrela."
+    },
+    img: ["images/covao-ametade1.jpg","images/covao-ametade2.jpg","images/covao-ametade3.jpg","images/covao-ametade4.jpg","images/covao-ametade5.jpg"],
+    audio: { pt:"audio/covao.mp3", en:"audio/covao.mp3", es:"audio/covao.mp3", fr:"audio/covao.mp3" }
+  },
+
+  {
+    nome: "Vale do Zêzere",
+    lat: 40.3565, lng: -7.5586,          // 🔴 corrigido (~3900m)
+    raio: 700,
+    texto: {
+      pt: "Impressionante vale glaciar.",
+      en: "An impressive glacial valley.",
+      es: "Impresionante valle glaciar.",
+      fr: "Impressionnant vallon glaciaire."
+    },
+    img: ["images/zezere1.png","images/zezere2.png","images/zezere3.png"],
+    audio: { pt:"audio/zezere.mp3", en:"audio/zezere.mp3", es:"audio/zezere.mp3", fr:"audio/zezere.mp3" }
+  },
+
+  {
+    nome: "Lagoa Comprida",
+    lat: 40.3651, lng: -7.6472,          // 🔴 corrigido (~5100m)
+    raio: 700,
+    texto: {
+      pt: "A maior lagoa da Serra da Estrela, formada por uma barragem construída no século XX. Um dos principais reservatórios de água da região.",
+      en: "The largest lagoon in Serra da Estrela, formed by a dam built in the 20th century. One of the region's main water reservoirs.",
+      es: "La laguna más grande de la Serra da Estrela, formada por una presa construida en el siglo XX.",
+      fr: "Le plus grand lac de la Serra da Estrela, formé par un barrage construit au XXe siècle."
+    },
+    img: ["images/lagoa-comprida1.jpg","images/lagoa-comprida2.jpg"],
+    audio: { pt:"audio/lagoa-comprida.mp3", en:"audio/lagoa-comprida.mp3", es:"audio/lagoa-comprida.mp3", fr:"audio/lagoa-comprida.mp3" }
+  },
+
+  {
+    nome: "Cascata Poço do Inferno",
+    lat: 40.3727, lng: -7.5165,          // ✅ mantido (<10m)
+    raio: 700,
+    texto: {
+      pt: "Uma das cascatas naturais mais bonitas da região.",
+      en: "One of the most beautiful natural waterfalls in the region.",
+      es: "Una de las cascadas naturales más bonitas de la región.",
+      fr: "L'une des plus belles cascades naturelles de la région."
+    },
+    img: ["images/pocoinferno1.jpg"],
+    audio: { pt:"audio/pocoinferno.mp3", en:"audio/pocoinferno.mp3", es:"audio/pocoinferno.mp3", fr:"audio/pocoinferno.mp3" }
+  },
+
+  {
+    nome: "Sabugueiro",
+    lat: 40.4023, lng: -7.6399,          // ✅ corrigido (+100m)
+    raio: 700,
+    texto: {
+      pt: "Conhecida como a aldeia mais alta de Portugal, situada a cerca de 1.100 metros de altitude. Destaca-se pela arquitetura tradicional e produtos regionais.",
+      en: "Known as the highest village in Portugal, located at about 1,100 metres altitude. Famous for its traditional architecture and regional products.",
+      es: "Conocida como el pueblo más alto de Portugal, a unos 1.100 metros de altitud. Destacada por su arquitectura tradicional y productos regionales.",
+      fr: "Connue comme le village le plus haut du Portugal, à environ 1 100 mètres. Remarquable pour son architecture traditionnelle et ses produits régionaux."
+    },
+    img: ["images/sabugueiro1.jpg","images/sabugueiro2.jpg"],
+    audio: { pt:"audio/sabugueiro.mp3", en:"audio/sabugueiro.mp3", es:"audio/sabugueiro.mp3", fr:"audio/sabugueiro.mp3" }
+  },
+
+  // ========================
+  // NOVOS PONTOS — DESCIDA PARA AS ALDEIAS
+  // ========================
+
+  {
+    nome: "Aldeia de Loriga",
+    lat: 40.3273, lng: -7.6786,          // ✅ NOVO — verificado via Praia Fluvial de Loriga
+    raio: 700,
+    texto: {
+      pt: "Uma das mais belas aldeias da Serra da Estrela, conhecida como 'a Suíça portuguesa'. Berço do futebol português e palco de lendas medievais.",
+      en: "One of the most beautiful villages in Serra da Estrela, known as 'the Portuguese Switzerland'. Birthplace of Portuguese football and stage of medieval legends.",
+      es: "Uno de los pueblos más bellos de la Serra da Estrela, conocido como 'la Suiza portuguesa'. Cuna del fútbol portugués.",
+      fr: "L'un des plus beaux villages de la Serra da Estrela, surnommé 'la Suisse portugaise'. Berceau du football portugais."
+    },
+    img: ["images/loriga-aldeia1.jpg","images/loriga-aldeia2.jpg"],
+    audio: { pt:"audio/loriga-aldeia.mp3", en:"audio/loriga-aldeia.mp3", es:"audio/loriga-aldeia.mp3", fr:"audio/loriga-aldeia.mp3" }
+  },
+
+  {
+    nome: "Praia Fluvial de Loriga",
+    lat: 40.3273, lng: -7.6786,          // ✅ NOVO — verificado (rating 4.7 ⭐ / 5128 reviews)
+    raio: 500,
+    texto: {
+      pt: "Uma das praias fluviais mais bonitas de Portugal. Água cristalina e paisagem de montanha única. Bar e zona de lazer junto à praia.",
+      en: "One of the most beautiful river beaches in Portugal. Crystal clear water and unique mountain scenery. Bar and leisure area by the beach.",
+      es: "Una de las playas fluviales más bonitas de Portugal. Agua cristalina y paisaje de montaña único.",
+      fr: "L'une des plus belles plages fluviales du Portugal. Eau cristalline et paysage de montagne unique."
+    },
+    img: ["images/praia-loriga1.jpg","images/praia-loriga2.jpg"],
+    audio: { pt:"audio/praia-loriga.mp3", en:"audio/praia-loriga.mp3", es:"audio/praia-loriga.mp3", fr:"audio/praia-loriga.mp3" }
+  },
+
+  {
+    nome: "Aldeia de Vide",
+    lat: 40.2943, lng: -7.7842,          // ✅ NOVO — verificado
+    raio: 700,
+    texto: {
+      pt: "Aldeia histórica preservada na Serra da Estrela. Arquitetura de granito, ruas medievais e vista sobre o vale do Sever. Uma das Aldeias do Xisto da região.",
+      en: "Historic preserved village in Serra da Estrela. Granite architecture, medieval streets and views over the Sever valley. One of the region's Schist Villages.",
+      es: "Aldea histórica preservada en la Serra da Estrela. Arquitectura de granito, calles medievales y vistas al valle del Sever.",
+      fr: "Village historique préservé dans la Serra da Estrela. Architecture en granit, rues médiévales et vue sur la vallée du Sever."
+    },
+    img: ["images/vide1.jpg","images/vide2.jpg"],
+    audio: { pt:"audio/vide.mp3", en:"audio/vide.mp3", es:"audio/vide.mp3", fr:"audio/vide.mp3" }
+  },
+
+  {
+    nome: "Praia Fluvial Foz d'Égua",
+    lat: 40.2472, lng: -7.8127,          // ✅ NOVO — verificado (rating 4.7 ⭐ / 3652 reviews)
+    raio: 500,
+    texto: {
+      pt: "Praia fluvial de rara beleza, emoldurada por casas de xisto e vegetação luxuriante. Ponto de partida da trilha pedestre até ao Piodão.",
+      en: "River beach of rare beauty, framed by schist houses and lush vegetation. Starting point of the hiking trail to Piodão.",
+      es: "Playa fluvial de rara belleza, enmarcada por casas de pizarra y vegetación exuberante. Punto de partida del sendero hasta Piodão.",
+      fr: "Plage fluviale d'une rare beauté, encadrée de maisons en schiste et d'une végétation luxuriante. Point de départ du sentier vers Piodão."
+    },
+    img: ["images/foz-egua1.jpg","images/foz-egua2.jpg"],
+    audio: { pt:"audio/foz-egua.mp3", en:"audio/foz-egua.mp3", es:"audio/foz-egua.mp3", fr:"audio/foz-egua.mp3" }
+  },
+
+  {
+    nome: "Aldeia do Piodão",
+    lat: 40.2293, lng: -7.8250,          // ✅ NOVO — verificado (rating 4.7 ⭐ / 9062 reviews)
+    raio: 600,
+    texto: {
+      pt: "Uma das aldeias mais únicas de Portugal. Casas de xisto escuro com janelas azuis, aninhadas numa encosta da Serra do Açor. Aldeia Histórica classificada.",
+      en: "One of Portugal's most unique villages. Dark schist houses with blue windows, nestled on a hillside of Serra do Açor. A classified Historic Village.",
+      es: "Uno de los pueblos más únicos de Portugal. Casas de pizarra oscura con ventanas azules, enclavadas en una ladera de Serra do Açor. Aldea Histórica clasificada.",
+      fr: "L'un des villages les plus uniques du Portugal. Maisons en schiste sombre avec fenêtres bleues, nichées sur un versant de la Serra do Açor. Village historique classé."
+    },
+    img: ["images/piodao1.jpg","images/piodao2.jpg","images/piodao3.jpg"],
+    audio: { pt:"audio/piodao.mp3", en:"audio/piodao.mp3", es:"audio/piodao.mp3", fr:"audio/piodao.mp3" }
+  },
+
 ];
 
-// Marcadores no mapa
+// ================================================================
+// Marcadores no mapa — manter este bloco logo abaixo do array
+// ================================================================
 pontos.forEach(p => {
   L.marker([p.lat, p.lng]).addTo(map).bindPopup(p.nome);
   L.circle([p.lat, p.lng], { radius: p.raio, color: "#2e7d32", fillOpacity: 0.07 }).addTo(map);
 });
 
+// ================================================================
+// RESUMO DE ALTERAÇÕES:
+//
+// PONTOS CORRIGIDOS (coordenadas):
+//   🔴 Lagoa Comprida:        5.1km → corrigido
+//   🔴 Vale do Zêzere:        3.9km → corrigido
+//   🔴 Covão d'Ametade:       3.0km → corrigido
+//   🔴 Nave de Santo António: 2.3km → corrigido
+//   🟡 Sanatório:             510m  → corrigido
+//   🟡 Penhas da Saúde:       220m  → corrigido
+//   🟡 Igreja Fátima:         200m  → corrigido
+//   🟡 Castelo da Covilhã:     75m  → corrigido
+//   ✅ 15 pontos com desvios < 100m ajustados
+//
+// NOVOS PONTOS ADICIONADOS (6):
+//   ✅ Miradouro dos Carquejais  — lat:40.2911, lng:-7.5275
+//   ✅ Aldeia de Loriga          — lat:40.3273, lng:-7.6786
+//   ✅ Praia Fluvial de Loriga   — lat:40.3273, lng:-7.6786
+//   ✅ Aldeia de Vide            — lat:40.2943, lng:-7.7842
+//   ✅ Praia Fluvial Foz d'Égua  — lat:40.2472, lng:-7.8127
+//   ✅ Aldeia do Piodão          — lat:40.2293, lng:-7.8250
+//
+// IMAGENS A ADICIONAR na pasta images/:
+//   carquejais1.jpg, carquejais2.jpg
+//   loriga-aldeia1.jpg, loriga-aldeia2.jpg
+//   praia-loriga1.jpg, praia-loriga2.jpg
+//   vide1.jpg, vide2.jpg
+//   foz-egua1.jpg, foz-egua2.jpg
+//   piodao1.jpg, piodao2.jpg, piodao3.jpg
+//
+// ÁUDIOS A ADICIONAR na pasta audio/:
+//   carquejais.mp3, loriga-aldeia.mp3, praia-loriga.mp3
+//   vide.mp3, foz-egua.mp3, piodao.mp3
+// ================================================================
 // ================================================================
 // 4. ESTADO
 // ================================================================

@@ -3,7 +3,7 @@
 // Cache-first para assets, network-first para o HTML principal
 // ================================================================
 
-const CACHE_VERSION = 'euro-tours-v3';
+const CACHE_VERSION = 'euro-tours-v4';
 const CACHE_STATIC  = `${CACHE_VERSION}-static`;
 const CACHE_ASSETS  = `${CACHE_VERSION}-assets`;
 

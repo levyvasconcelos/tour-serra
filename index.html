@@ -370,6 +370,8 @@ pontos.forEach((p,i)=>{
   L.circle([p.lat,p.lng],{radius:p.raio,color:"#2e7d32",fillOpacity:.07}).addTo(map);
 });
 
+// Áudio: um ficheiro por idioma (nome.mp3, nome_en.mp3, nome_es.mp3, nome_fr.mp3); se faltar, usa o português
+pontos.forEach(p=>{if(p.audio&&p.audio.pt){const b=p.audio.pt.replace(/\.mp3$/,'');p.audio={pt:b+'.mp3',en:b+'_en.mp3',es:b+'_es.mp3',fr:b+'_fr.mp3'}}});
 // ---- Enquadramento das fotos ----
 // Foco (x,y em fração da imagem) e zoom para fotos onde o motivo principal não está ao centro.
 const FOCO={
@@ -515,7 +517,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharLightbox()});
 // ================================================================
 // 9. ÁUDIO
 // ================================================================
-function tocarAudio(p){pararAudio();if(!p.audio)return;const src=(typeof p.audio==='object')?(p.audio[idiomaAtual]||p.audio.pt):p.audio;audioAtual=new Audio(src);audioAtual.addEventListener('ended',()=>{audioTocando=false;atualizarBtnAudio()});audioAtual.play().then(()=>{audioTocando=true;atualizarBtnAudio();document.getElementById('btn-audio').style.display='flex'}).catch(()=>{})}
+function tocarAudio(p){pararAudio();if(!p.audio)return;const src=(typeof p.audio==='object')?(p.audio[idiomaAtual]||p.audio.pt):p.audio;audioAtual=new Audio(src);if(p.audio&&p.audio.pt&&src!==p.audio.pt){const a0=audioAtual;a0.addEventListener('error',()=>{if(audioAtual!==a0)return;audioAtual=new Audio(p.audio.pt);audioAtual.addEventListener('ended',()=>{audioTocando=false;atualizarBtnAudio()});audioAtual.play().then(()=>{audioTocando=true;atualizarBtnAudio();document.getElementById('btn-audio').style.display='flex'}).catch(()=>{})})}audioAtual.addEventListener('ended',()=>{audioTocando=false;atualizarBtnAudio()});audioAtual.play().then(()=>{audioTocando=true;atualizarBtnAudio();document.getElementById('btn-audio').style.display='flex'}).catch(()=>{})}
 function pararAudio(){if(audioAtual){audioAtual.pause();audioAtual=null}audioTocando=false;atualizarBtnAudio()}
 function toggleAudio(){if(!audioAtual)return;if(audioTocando){audioAtual.pause();audioTocando=false}else{audioAtual.play().catch(()=>{});audioTocando=true}atualizarBtnAudio()}
 function atualizarBtnAudio(){const btn=document.getElementById('btn-audio');btn.textContent=audioTocando?'🔊':'🔇';btn.setAttribute('aria-label',t(audioTocando?'audio_pausar':'audio_retomar'));btn.setAttribute('aria-pressed',String(audioTocando));btn.classList.toggle('tocando',audioTocando)}

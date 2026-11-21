@@ -69,13 +69,26 @@ body{font-family:var(--font-corpo);background:var(--cinza-bg);color:var(--texto-
 #info p{font-size:15px;line-height:1.65;color:var(--texto-primario)}
 .info-vazio{color:var(--texto-secundario);font-style:italic;font-size:14px;text-align:center;padding:6px 0}
 /* Galeria acima do mapa — altura mais compacta */
-#info .galeria{aspect-ratio:16/7;margin-top:12px}
+#info .galeria{aspect-ratio:4/3;max-height:70vh;margin-top:12px}
 /* Mapa sem arredondamento em cima quando tem info colada */
 #map{height:40vh;min-height:200px;width:100%;border-top:none;border-bottom:3px solid var(--verde-escuro)}
 /* CARROSSEL */
 .galeria{position:relative;overflow:hidden;border-radius:var(--radius-sm);margin-top:14px;background:#000;aspect-ratio:16/9}
-.carousel{display:flex;transition:transform .4s ease;height:100%}
-.carousel img{min-width:100%;height:100%;object-fit:cover;display:block}
+.carousel{display:flex;transition:transform .4s ease;height:100%;touch-action:pan-y}
+.slide{min-width:100%;height:100%;position:relative;overflow:hidden;background:#111;cursor:zoom-in}
+.slide .bg{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(18px) brightness(.65);display:none}
+.slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.slide.contain .bg{display:block}
+.slide.contain img{object-fit:contain}
+.slide.foco img{right:auto;bottom:auto;max-width:none;object-fit:fill}
+.zoom-dica{position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 8px;border-radius:99px;pointer-events:none}
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.95);display:none;overflow:auto;-webkit-overflow-scrolling:touch}
+#lightbox.ativo{display:flex;align-items:center;justify-content:center}
+#lightbox img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in;display:block}
+#lightbox.zoom{display:block}
+#lightbox.zoom img{max-width:none;max-height:none;width:240vw;cursor:zoom-out}
+.lb-fechar{position:fixed;top:14px;right:14px;z-index:9600;width:48px;height:48px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.6);color:#fff;font-size:22px;cursor:pointer}
 .car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;width:44px;height:44px;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:5;cursor:pointer;border-radius:50%;transition:background .2s}
 .car-btn:hover{background:rgba(0,0,0,.8)}
 .car-btn:focus-visible{outline:3px solid var(--dourado);outline-offset:2px}
@@ -281,6 +294,12 @@ body{font-family:var(--font-corpo);background:var(--cinza-bg);color:var(--texto-
   </div>
 </div>
 
+<!-- LIGHTBOX FOTO -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" onclick="fecharLightbox()">
+<button class="lb-fechar" id="lightbox-fechar" onclick="fecharLightbox()" aria-label="Fechar foto">✕</button>
+<img id="lightbox-img" src="" alt="" onclick="zoomLightbox(event)">
+</div>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 "use strict";
@@ -341,10 +360,27 @@ const pontos=[
   {nome:"Aldeia do Piodão",lat:40.2293,lng:-7.8250,raio:600,texto:{pt:"Uma das aldeias mais únicas de Portugal. Casas de xisto escuro com janelas azuis. Aldeia Histórica classificada.",en:"One of Portugal's most unique villages. Dark schist houses with blue windows. A classified Historic Village.",es:"Uno de los pueblos más únicos de Portugal. Casas de pizarra con ventanas azules.",fr:"L'un des villages les plus uniques du Portugal. Maisons en schiste avec fenêtres bleues."},img:["images/piodao1.jpg","images/piodao2.jpg","images/piodao3.jpg"],audio:{pt:"audio/piodao.mp3",en:"audio/piodao.mp3",es:"audio/piodao.mp3",fr:"audio/piodao.mp3"}},
 ];
 
-pontos.forEach(p=>{
-  L.marker([p.lat,p.lng]).addTo(map).bindPopup(p.nome);
+pontos.forEach((p,i)=>{
+  L.marker([p.lat,p.lng]).addTo(map).bindPopup(()=>popupHtml(p,i),{maxWidth:240,autoPanPaddingTopLeft:[10,40]});
   L.circle([p.lat,p.lng],{radius:p.raio,color:"#2e7d32",fillOpacity:.07}).addTo(map);
 });
+
+// ---- Enquadramento das fotos ----
+// Foco (x,y em fração da imagem) e zoom para fotos onde o motivo principal não está ao centro.
+const FOCO={
+  'images/boaestrela1.jpg':{x:.51,y:.48,z:1.6},
+  'images/boaestrela2.jpg':{x:.57,y:.40,z:1},
+  'images/boaestrela3.jpg':{x:.53,y:.40,z:2.2}
+};
+// ---- Alfinetes com "Ver foto e informação" ----
+const TXT_VER={pt:'Ver foto e informação',en:'See photo and info',es:'Ver foto e información',fr:'Voir photo et infos'};
+function popupHtml(p,i){
+  let f='';
+  if(p.img&&p.img.length){const fc=FOCO[p.img[0]],pos=fc?`${Math.round(fc.x*100)}% ${Math.round(fc.y*100)}%`:'50% 40%';
+    f=`<img src="${p.img[0]}" alt="" style="width:100%;height:120px;object-fit:cover;object-position:${pos};border-radius:6px;display:block;margin-bottom:6px" onerror="this.remove()">`}
+  return `<div style="text-align:center">${f}<strong style="font-size:15px">${p.nome}</strong><br><button onclick="abrirDoMapa(${i})" style="margin-top:8px;background:#2e7d32;color:#fff;border:none;border-radius:8px;padding:10px 12px;font-size:14px;font-weight:600;cursor:pointer;width:100%;min-height:44px">${TXT_VER[idiomaAtual]||TXT_VER.pt}</button></div>`;
+}
+function abrirDoMapa(i){const p=pontos[i];map.closePopup();pontoAtivoObj=p;mostrarInfo(p)}
 
 // ================================================================
 // 4. ESTADO
@@ -409,7 +445,7 @@ function mostrarInfo(p){
     html+=`<div class="galeria" role="region" aria-label="${p.nome} — galeria de imagens">`;
     if(total>1)html+=`<button class="car-btn prev" onclick="mover('${id}',-1)" aria-label="${t('btn_anterior')}">‹</button>`;
     html+=`<div class="carousel" id="${id}" role="list">`;
-    p.img.forEach((f,i)=>{html+=`<img src="${f}" alt="${t('img_alt',{nome:p.nome,n:i+1,total})}" role="listitem" loading="${i===0?'eager':'lazy'}">`});
+    p.img.forEach((f,i)=>{html+=`<div class="slide" role="listitem" onclick="abrirLightbox(this)"><div class="bg" style="background-image:url('${f}')"></div><img src="${f}" data-src="${f}" alt="${t('img_alt',{nome:p.nome,n:i+1,total})}" loading="${i===0?'eager':'lazy'}" onload="ajustarSlide(this)" onerror="slideErro(this)"></div>`});
     html+=`</div>`;
     if(total>1){html+=`<button class="car-btn next" onclick="mover('${id}',1)" aria-label="${t('btn_seguinte')}">›</button>`;html+=`<span class="car-counter" aria-hidden="true">1 / ${total}</span>`}
     html+=`</div>`;
@@ -417,10 +453,49 @@ function mostrarInfo(p){
   if(navigator.share)html+=`<button class="btn-partilhar" onclick="partilharPonto('${p.nome.replace(/'/g,"\\'")}')">
     ${t('btn_partilhar')}</button>`;
   document.getElementById('info').innerHTML=html;
+  if(p.img&&p.img.length)ativarSwipe(document.querySelector('#info .carousel').id);
   document.getElementById('info').scrollIntoView({behavior:'smooth',block:'start'});
 }
 const carIndex={};
 function mover(id,dir){const el=document.getElementById(id);if(!el)return;const total=el.children.length;if(!(id in carIndex))carIndex[id]=0;carIndex[id]=(carIndex[id]+dir+total)%total;el.style.transform=`translateX(-${carIndex[id]*100}%)`;const cnt=el.parentElement.querySelector('.car-counter');if(cnt)cnt.textContent=`${carIndex[id]+1} / ${total}`}
+
+// ---- Galeria: enquadramento, swipe, lightbox ----
+function ajustarSlide(img){
+  const sl=img.closest('.slide');if(!sl||!img.naturalWidth)return;
+  const f=FOCO[img.dataset.src],Fw=sl.clientWidth,Fh=sl.clientHeight;
+  if(f&&Fw){
+    sl.classList.add('foco');
+    const sc=Math.max(Fw/img.naturalWidth,Fh/img.naturalHeight)*(f.z||1),dw=img.naturalWidth*sc,dh=img.naturalHeight*sc;
+    const x=Math.min(0,Math.max(Fw-dw,Fw/2-f.x*dw)),y=Math.min(0,Math.max(Fh-dh,Fh/2-f.y*dh));
+    img.style.width=dw+'px';img.style.height=dh+'px';img.style.transform=`translate(${x}px,${y}px)`;
+  }else if(img.naturalWidth/img.naturalHeight<1.15){sl.classList.add('contain')}
+}
+window.addEventListener('resize',()=>document.querySelectorAll('.slide img').forEach(ajustarSlide));
+function slideErro(img){
+  const sl=img.closest('.slide'),car=sl&&sl.parentElement,gal=car&&car.parentElement;if(!sl)return;
+  sl.remove();
+  if(!car.children.length){gal.style.display='none';return}
+  carIndex[car.id]=0;car.style.transform='translateX(0)';
+  const cnt=gal.querySelector('.car-counter');if(cnt)cnt.textContent=`1 / ${car.children.length}`;
+  if(car.children.length<2)gal.querySelectorAll('.car-btn,.car-counter').forEach(e=>e.style.display='none');
+}
+function ativarSwipe(id){
+  const el=document.getElementById(id);if(!el)return;let x0=null,y0=null,moveu=false;
+  el.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY;moveu=false},{passive:true});
+  el.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;
+    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5&&el.children.length>1){moveu=true;mover(id,dx<0?1:-1);el.dataset.swipe='1';setTimeout(()=>{delete el.dataset.swipe},350)}},{passive:true});
+}
+function abrirLightbox(sl){
+  if(sl.parentElement.dataset.swipe)return;
+  const im=sl.querySelector('img');if(!im)return;
+  const lb=document.getElementById('lightbox'),big=document.getElementById('lightbox-img');
+  big.src=im.src;big.alt=im.alt;lb.classList.remove('zoom');lb.classList.add('ativo');lb.scrollTo(0,0);
+  document.getElementById('lightbox-fechar').focus();
+}
+function fecharLightbox(){const lb=document.getElementById('lightbox');lb.classList.remove('ativo','zoom');document.getElementById('lightbox-img').src=''}
+function zoomLightbox(e){e.stopPropagation();const lb=document.getElementById('lightbox');lb.classList.toggle('zoom');
+  if(lb.classList.contains('zoom')){lb.scrollLeft=(lb.scrollWidth-lb.clientWidth)/2;lb.scrollTop=(lb.scrollHeight-lb.clientHeight)/2}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharLightbox()});
 
 // ================================================================
 // 9. ÁUDIO
